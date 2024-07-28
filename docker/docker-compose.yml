@@ -47,7 +47,7 @@ services:
 
   # MongoDB: Stores the graylog metadata and configurations
   mongo:
-    image: mongo:4.4
+    image: mongo:5.0
     container_name: mongodb
     ports:
       - "27017:27017"
@@ -64,7 +64,7 @@ services:
 
   # Elasticsearch: Stores the log data
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.0.0
     container_name: elasticsearch
     networks:
       graylog:
@@ -72,13 +72,16 @@ services:
           - elasticsearch-hostname
     environment:
       - node.name=elasticsearch
+      - ELASTIC_PASSWORD=changeme
       - cluster.name=graylog
       - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - xpack.security.enabled=false
     ports:
       - "9200:9200"
     volumes:
       - es_data:/usr/share/elasticsearch/data
+
     restart: unless-stopped
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1" ]
