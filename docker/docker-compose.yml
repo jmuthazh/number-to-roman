@@ -45,89 +45,70 @@ services:
     networks:
       - monitoring
 
-  # MongoDB: Stores the graylog metadata and configurations
-  mongo:
-    image: mongo:5.0
-    container_name: mongodb
-    ports:
-      - "27017:27017"
-    networks:
-      - graylog
-    volumes:
-      - mongo_data:/data/db
-    restart: unless-stopped
-    healthcheck:
-      test: [ "CMD", "mongo", "--eval", "db.adminCommand('ping')" ]
-      interval: 10s
-      timeout: 10s
-      retries: 5
-
-  # Elasticsearch: Stores the log data
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.0.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
     container_name: elasticsearch
     networks:
-      graylog:
-        aliases:
-          - elasticsearch-hostname
+      - elk
     environment:
       - node.name=elasticsearch
-      - ELASTIC_PASSWORD=changeme
-      - cluster.name=graylog
+      - cluster.name=elk-cluster
       - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms1g -Xmx1g
-      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
     ports:
       - "9200:9200"
     volumes:
       - es_data:/usr/share/elasticsearch/data
-
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1" ]
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
       interval: 10s
       timeout: 10s
       retries: 5
 
-  # Graylog: The central log management server
-  graylog:
-    image: graylog/graylog:5.0.0
-    container_name: graylog
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.13.4
+    container_name: logstash
     networks:
-      - graylog
-    depends_on:
-      elasticsearch:
-        condition: "service_started"
-      mongo:
-          condition: "service_started"
-
+      - elk
     environment:
-      - GRAYLOG_PASSWORD_SECRET=supersecretpasswordsecret
-      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918  # SHA-256 for 'admin'
-      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
-      - GRAYLOG_ELASTICSEARCH_HOSTS=http://elasticsearch-hostname:9200
-      - GRAYLOG_MONGODB_URI=mongodb://mongo:27017/graylog
-
-    entrypoint: /usr/bin/tini -- wait-for-it mongo:27017 -- wait-for-it elasticsearch:9200 -- /docker-entrypoint.sh
+      - LS_JAVA_OPTS=-Xms256m -Xmx256m
+      - ELASTIC_USER= elastic
+      - ELASTIC_PASSWORD= changeme
+      - XPACK_MONITORING_ELASTICSEARCH_USERNAME= elastic
+      - XPACK_MONITORING_ELASTICSEARCH_PASSWORD= changeme
     ports:
-      - 9000:9000/tcp   # Graylog web interface and REST API
-      - 12201:12201/tcp # GELF
-      - 12201:12201/udp # GELF
-      - 1514:1514/tcp   # Syslog
-      - 1514:1514/udp   # Syslog
-    restart: always
-
+      - "5044:5044"  # Beats
+      - "5000:5000"  # Logstash TCP input
     volumes:
-      - graylog_journal:/usr/share/graylog/data/journal
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.13.4
+    container_name: kibana
+    networks:
+      - elk
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - XPACK_MONITORING_UI_CONTAINER_ELASTICSEARCH_ENABLED=true
+      - XPACK_MONITORING_COLLECTION_ENABLED=true
+    ports:
+      - "5601:5601"
+    volumes:
+      - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+
 volumes:
   grafana-storage:
-  mongo_data:
   es_data:
-  graylog_journal:
-
 
 networks:
   monitoring:
     driver: bridge
-  graylog:
+  elk:
     driver: bridge
