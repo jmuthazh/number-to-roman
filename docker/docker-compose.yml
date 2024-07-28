@@ -45,11 +45,68 @@ services:
     networks:
       - monitoring
 
+  # MongoDB: Stores the graylog metadata and configurations
+  mongo:
+    image: mongo:4.2
+    container_name: mongodb
+    networks:
+      - graylog
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
 
+  # Elasticsearch: Stores the log data
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    container_name: elasticsearch
+    networks:
+      - graylog
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms1024m -Xmx1024m
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    restart: unless-stopped
+
+  # Graylog: The central log management server
+  graylog:
+    image: graylog/graylog:4.2
+    container_name: graylog
+    networks:
+      - graylog
+    depends_on:
+      elasticsearch:
+        condition: "service_started"
+      mongo:
+          condition: "service_started"
+
+    environment:
+      - GRAYLOG_PASSWORD_SECRET=supersecretpasswordsecret
+      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918  # SHA-256 for 'admin'
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://localhost:9000/
+      - GRAYLOG_ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+
+
+    entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 -- /docker-entrypoint.sh
+    ports:
+      - 9000:9000/tcp   # Graylog web interface and REST API
+      - 12201:12201/tcp # GELF
+      - 12201:12201/udp # GELF
+      - 1514:1514/tcp   # Syslog
+      - 1514:1514/udp   # Syslog
+    restart: always
+
+    volumes:
+      - graylog_journal:/usr/share/graylog/data/journal
 volumes:
   grafana-storage:
+  mongo_data:
+  es_data:
+  graylog_journal:
 
 
 networks:
   monitoring:
+    driver: bridge
+  graylog:
     driver: bridge
