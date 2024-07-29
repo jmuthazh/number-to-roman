@@ -6,7 +6,7 @@
     <springProperty scope="context" name="app_port" source="server.port"/>
 
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>localhost:5000</destination>
+        <destination>logstash:5000</destination>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
             <customFields>{"app_name":"${app_name}","app_port":"${app_port}"}</customFields>
         </encoder>
