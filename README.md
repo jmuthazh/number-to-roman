@@ -14,6 +14,12 @@ Before you begin, ensure you have met the following requirements:
 Basic understanding of Spring Boot, Docker, and monitoring/logging tools
 
 
+## **Sonar Qube**
+```sh
+http://localhost:9000
+```
+user: admin, password: admin
+
 ## **References**
 Spring Boot Documentation
 Grafana Documentation
