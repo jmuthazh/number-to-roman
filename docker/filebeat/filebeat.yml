@@ -5,7 +5,7 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /logs/*.log   # Path to the log files you want to monitor
+      - /var/log/app/application.log   # Path to the log files you want to monitor
 
 
 # Setup Filebeat to automatically manage Kibana index patterns
