@@ -5,34 +5,13 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /var/log/app/application.log   # Path to the log files you want to monitor
+      - /var/log/spring-boot/application.log
+    fields:
+      app_id: my-spring-boot-app
+    fields_under_root: true
 
-
-# Setup Filebeat to automatically manage Kibana index patterns
-setup.kibana:
-  host: "kibana:5601"   # Adjust this if using a different host or port for Kibana
-
-# Configure output to Logstash
 output.logstash:
-  hosts: ["logstash:5044"]  # Adjust the Logstash service name and port as needed
+  hosts: ["logstash:5000"]
 
-# Alternatively, configure output to Elasticsearch directly
-#output.elasticsearch:
-#  hosts: ["http://elasticsearch:9200"]  # Adjust the Elasticsearch service URL as needed
 
-# Optional settings for Filebeat
-# Configure the logging level of Filebeat
-logging.level: info   # Set to debug for more detailed logs
-logging.selectors: ["*"]   # Log all events; adjust as needed
-
-# Enable and configure Filebeat modules if needed
-# Modules provide predefined configurations for various log sources
-filebeat.modules:
-  - module: system
-    syslog:
-      enabled: true
-      var.paths: ["/var/log/syslog"]
-    auth:
-      enabled: true
-      var.paths: ["/var/log/auth.log"]
 

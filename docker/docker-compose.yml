@@ -12,6 +12,7 @@ services:
     restart: on-failure
     networks:
       - monitoring
+      - elk
     depends_on:
       elasticsearch:
         condition: service_healthy
@@ -61,7 +62,7 @@ services:
       retries: 3
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.22
     container_name: elasticsearch
     networks:
       - elk
@@ -87,11 +88,11 @@ services:
       retries: 5
 
   filebeat:
-    image: docker.elastic.co/beats/filebeat:7.13.4
+    image: docker.elastic.co/beats/filebeat:7.17.22
     container_name: filebeat
     volumes:
       - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
-      - ./filebeat/logs:/var/log:ro
+      - ./logs:/var/log/spring-boot:ro
     networks:
       - elk
     depends_on:
@@ -103,7 +104,7 @@ services:
       retries: 3
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:7.13.4
+    image: docker.elastic.co/logstash/logstash:7.17.22
     container_name: logstash
     networks:
       - elk
@@ -129,7 +130,7 @@ services:
       retries: 5
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.13.4
+    image: docker.elastic.co/kibana/kibana:7.17.22
     container_name: kibana
     networks:
       - elk
