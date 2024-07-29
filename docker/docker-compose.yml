@@ -55,6 +55,7 @@ services:
       - cluster.name=elk-cluster
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     ports:
       - "9200:9200"
     volumes:
@@ -69,6 +70,17 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.13.4
+    container_name: filebeat
+    volumes:
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./filebeat/logs:/var/log:ro
+    networks:
+      - elk
+    depends_on:
+      - logstash
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.13.4
@@ -86,6 +98,7 @@ services:
       - "5000:5000"  # Logstash TCP input
     volumes:
       - ./logstash/pipeline:/usr/share/logstash/pipeline
+      - ./logstash/templates/logstash.template.json:/usr/share/logstash/templates/logstash.template.json
     depends_on:
       - elasticsearch
     restart: unless-stopped

@@ -1,0 +1,28 @@
+cluster.name: elasticsearch-cluster
+network.host: 0.0.0.0
+http.port: 9200
+transport.tcp.port: 9300
+discovery.type: single-node
+xpack.security.enabled: false
+xpack.monitoring.enabled: true
+xpack.monitoring.collection.enabled: true
+logger.level: INFO
+# Node Name
+node.name: node-1
+# Discovery Settings
+discovery.seed_hosts: ["host1", "host2"]
+cluster.initial_master_nodes: ["node-1", "node-2"]
+
+# Path Settings
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+
+# Set to allow Elasticsearch to recover from certain failures
+action.auto_create_index: true
+
+# Index settings
+index.number_of_shards: 3
+index.number_of_replicas: 2
+
+# Set to ensure that indices are not created automatically
+index.auto_expand_replicas: false
