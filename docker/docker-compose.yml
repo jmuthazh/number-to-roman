@@ -12,6 +12,11 @@ services:
     restart: on-failure
     networks:
       - monitoring
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      logstash:
+        condition: service_healthy
 
   prometheus:
     image: prom/prometheus:latest
@@ -25,6 +30,11 @@ services:
     hostname: prometheus
     networks:
       - monitoring
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider --quiet http://localhost:9090/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   grafana:
     image: grafana/grafana:latest
@@ -44,6 +54,11 @@ services:
     hostname: grafana
     networks:
       - monitoring
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
@@ -81,6 +96,11 @@ services:
       - elk
     depends_on:
       - logstash
+    healthcheck:
+      test: ["CMD-SHELL", "filebeat test output || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.13.4
@@ -89,10 +109,10 @@ services:
       - elk
     environment:
       - LS_JAVA_OPTS=-Xms256m -Xmx256m
-      - ELASTIC_USER= elastic
-      - ELASTIC_PASSWORD= changeme
-      - XPACK_MONITORING_ELASTICSEARCH_USERNAME= elastic
-      - XPACK_MONITORING_ELASTICSEARCH_PASSWORD= changeme
+      - ELASTIC_USER=elastic
+      - ELASTIC_PASSWORD=changeme
+      - XPACK_MONITORING_ELASTICSEARCH_USERNAME=elastic
+      - XPACK_MONITORING_ELASTICSEARCH_PASSWORD=changeme
     ports:
       - "5044:5044"  # Beats
       - "5000:5000"  # Logstash TCP input
@@ -102,6 +122,11 @@ services:
     depends_on:
       - elasticsearch
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9600/_node/stats || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.13.4
@@ -119,6 +144,11 @@ services:
     depends_on:
       - elasticsearch
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5601/api/status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   grafana-storage:
