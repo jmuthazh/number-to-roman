@@ -82,6 +82,40 @@
             <artifactId>logstash-logback-encoder</artifactId>
             <version>6.3</version>
         </dependency>
+        <!-- OpenTelemetry API and SDK -->
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-api</artifactId>
+            <version>1.31.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-sdk</artifactId>
+            <version>1.31.0</version>
+        </dependency>
+
+        <!-- OpenTelemetry Exporter -->
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-otlp</artifactId>
+            <version>1.31.0</version>
+        </dependency>
+
+      <!--  &lt;!&ndash; OpenTelemetry Instrumentation for Spring Boot &ndash;&gt;
+        <dependency>
+            <groupId>io.opentelemetry.instrumentation</groupId>
+            <artifactId>opentelemetry-spring-boot-starter</artifactId>
+            <version>1.31.0-alpha</version>
+        </dependency>
+
+        &lt;!&ndash; OpenTelemetry Instrumentation for Logging (optional) &ndash;&gt;
+        <dependency>
+            <groupId>io.opentelemetry.instrumentation</groupId>
+            <artifactId>opentelemetry-logback-appender-1.0</artifactId>
+            <version>1.31.0-alpha</version>
+            <scope>runtime</scope>
+        </dependency>-->
+
         <!--- Test Dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

@@ -19,6 +19,20 @@ services:
         condition: service_healthy
       logstash:
         condition: service_healthy
+      otel-collector:
+        condition: service_started
+
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    ports:
+      - "4317:4317"  # OTLP gRPC receiver
+      - "55681:55681"  # Prometheus metrics
+    volumes:
+      - ./otel-collector/otel-collector-config.yaml:/etc/otel/config.yaml
+    command: [ "--config", "/etc/otel/config.yaml" ]
+    networks:
+      - monitoring
+
 
   prometheus:
     image: prom/prometheus:latest

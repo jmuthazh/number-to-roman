@@ -1,0 +1,22 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+processors:
+  batch:
+exporters:
+  otlp:
+    endpoint: "otel-collector:4317"  # Ensure this endpoint matches your OTLP receiver configuration
+  prometheus:
+    endpoint: "0.0.0.0:55681"
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [otlp]
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [prometheus]
