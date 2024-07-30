@@ -75,8 +75,9 @@ user: admin<br/> password: admin
     - **Conversion Service API:**
       - **API for Number:** http://localhost:8080/romannumeral?query=400
       - **API for Range:** http://localhost:8080/romannumeral?min=5&max=100
-      >[!NOTE]
-      >(Number Range should be from min: >=1, max <= 3999)
+      
+        > [!NOTE] <br/>
+      (Number Range should be from min: >=1, max <= 3999)
     - **Spring Metrics**
       - Spring Actuator: http://localhost:8080/actuator
       - Prometheus: http://localhost:8080/actuator/prometheus
