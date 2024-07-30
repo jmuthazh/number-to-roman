@@ -45,7 +45,7 @@ Before you begin, ensure you have met the following requirements:
 > [!Note]
 > Make sure all are containers are healthy, before using the service endpoints.
 ```bash
-docker ps -a
+docker-compose ps -a
 ```
 ![docker-container.jpeg](screenshots/docker-container.jpeg)
 
