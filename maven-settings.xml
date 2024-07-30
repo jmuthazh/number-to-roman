@@ -1,0 +1,9 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0">
+    <servers>
+        <server>
+            <id>sonar</id>
+            <username>admin</username>
+            <password>sqp_5f01fe9dcfb9280aec10e6f71ea9122b1589c6b0</password>
+        </server>
+    </servers>
+</settings>
