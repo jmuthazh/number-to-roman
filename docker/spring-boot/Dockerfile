@@ -1,8 +1,5 @@
 # Use an official OpenJDK runtime as a parent image
-FROM openjdk:17-jdk-alpine
-
-# Install Maven
-RUN apk add maven
+FROM thingsboard/openjdk17:1.9.0
 
 COPY maven-settings.xml /usr/src/app/.m2/settings.xml
 

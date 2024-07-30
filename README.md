@@ -12,7 +12,7 @@ This project demonstrates a Spring Boot application that converts numbers to Rom
 4. [Credentials](#4-credentials)
 5. [All Service Endpoint Details](#5-all-service-endpoint-details)
 6. [Run Test](#6-run-test)
-7. [Clean up Docker](#7-clean-up-docker)
+7. [Shutdown Service & Clean Up](#7-shutdown-service--clean-up-docker)
 8. [References](#8-references)
 
 ## 1. **Project Architecture**
@@ -42,12 +42,25 @@ Before you begin, ensure you have met the following requirements:
      ```
        
   After successful docker deployment, you should see the following containers running
-> [!Note]
+> [!NOTE]
 > Make sure all are containers are healthy, before using the service endpoints.
 ```bash
-docker ps -a
+docker-compose -f docker/docker-compose.yml ps -a
 ```
-![docker-container.jpeg](screenshots/docker-container.jpeg)
+```sh
+         Name                        Command                  State                                       Ports                                 
+------------------------------------------------------------------------------------------------------------------------------------------------
+docker_app_1              java -javaagent:/usr/src/a ...   Up             0.0.0.0:8080->8080/tcp                                                
+docker_otel-collector_1   /otelcol --config /etc/ote ...   Up             0.0.0.0:4317->4317/tcp, 55678/tcp, 55679/tcp, 0.0.0.0:55681->55681/tcp
+elasticsearch             /bin/tini -- /usr/local/bi ...   Up (healthy)   0.0.0.0:9200->9200/tcp, 9300/tcp                                      
+filebeat                  /usr/bin/tini -- /usr/loca ...   Up (healthy)                                                                         
+grafana                   /run.sh                          Up (healthy)   0.0.0.0:3000->3000/tcp                                                
+kibana                    /bin/tini -- /usr/local/bi ...   Up (healthy)   0.0.0.0:5601->5601/tcp                                                
+logstash                  /usr/local/bin/docker-entr ...   Up (healthy)   0.0.0.0:5000->5000/tcp, 0.0.0.0:5044->5044/tcp, 9600/tcp              
+prometheus                /bin/prometheus --config.f ...   Up (healthy)   0.0.0.0:9090->9090/tcp                                                
+sonarqube                 /opt/sonarqube/docker/entr ...   Up             0.0.0.0:9000->9000/tcp                                                
+sonarqube-db              docker-entrypoint.sh postgres    Up             5432/tcp                                         
+```
 
 
 ## 4. **Credentials**
@@ -62,7 +75,7 @@ user: admin<br/> password: admin
     - **Conversion Service API:**
       - **API for Number:** http://localhost:8080/romannumeral?query=400
       - **API for Range:** http://localhost:8080/romannumeral?min=5&max=100
-      [!Note]
+      >[!NOTE]
       >(Number Range should be from min: >=1, max <= 3999)
     - **Spring Metrics**
       - Spring Actuator: http://localhost:8080/actuator
@@ -91,10 +104,9 @@ user: admin<br/> password: admin
     Code Coverage Report
     ![sonq-qube.jpeg](screenshots/sonar-qube.jpeg)
 
-## 7. **Clean up Docker**
+## 7. **Shutdown Service & Clean up Docker**
 ```bash
-cd docker
-docker-compose down --remove-orphans
+ docker-compose -f docker/docker-compose.yml down --remove-orphans
 ```
 ## 8. **References**
 Spring Boot Documentation
