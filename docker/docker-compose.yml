@@ -155,8 +155,6 @@ services:
   sonarqube:
     image: sonarqube:latest
     container_name: sonarqube
-    depends_on:
-      - db
     ports:
       - "9000:9000"
     environment:
@@ -175,6 +173,8 @@ services:
       - POSTGRES_DB=sonarqube
     volumes:
       - sonarqube_db_data:/var/lib/postgresql/data
+
+
 
 volumes:
   grafana-storage:

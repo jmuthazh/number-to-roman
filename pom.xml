@@ -30,6 +30,20 @@
         <java.version>17</java.version>
         <spring-boot.version>3.3.2</spring-boot.version>
     </properties>
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <!-- Optional URL to server. Default value is http://localhost:9000 -->
+                <sonar.host.url>
+                    http://localhost:9000
+                </sonar.host.url>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
