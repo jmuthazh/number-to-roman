@@ -1,22 +1,9 @@
 #!/bin/bash
 
-# Wait for SonarQube to be available
-while true; do
-  # Fetch the health status from SonarQube
-  RESPONSE=$(curl -s -u $SONAR_USER:$SONAR_PASSWORD http://sonarqube:9000/api/system/health)
+# Running SonarQube analysis
+echo "Starting SonarQube analysis..."
+sleep 5
 
-  # Print the response for debugging
-  echo "Response from SonarQube: $RESPONSE"
-
-  # Check if the response contains the expected health status
-  if echo "$RESPONSE" | grep -q '"health":"GREEN"'; then
-    echo "SonarQube is up and running."
-    break
-  else
-    echo "Waiting for SonarQube to be available..."
-    sleep 5
-  fi
-done
 
 # Run SonarQube analysis with exclusions
 mvn clean verify sonar:sonar \

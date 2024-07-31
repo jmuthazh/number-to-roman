@@ -234,20 +234,20 @@ services:
         condition: service_started
 
 
-#  sonar-runner:
-#    image: maven:3.8.1-openjdk-17
-#    container_name: sonar-runner
-#    volumes:
-#      - sonar-data:/usr/src/app # Mount the shared volume
-#    working_dir: /usr/src/app
-#    environment:
-#      SONAR_TOKEN: ${SONAR_TOKEN}
-#    command: [ "/bin/bash", "-c", "./run-sonar.sh" ]
-#    depends_on:
-#      sonarqube:
-#        condition: service_healthy
-#    networks:
-#      - monitoring
+  sonar-runner:
+    image: maven:3.8.1-openjdk-17
+    container_name: sonar-runner
+    volumes:
+      - sonar-data:/usr/src/app # Mount the shared volume
+    working_dir: /usr/src/app
+    environment:
+      SONAR_TOKEN: ${SONAR_TOKEN}
+    command: [ "/bin/bash", "-c", "./run-sonar.sh" ]
+    depends_on:
+      sonarqube:
+        condition: service_healthy
+    networks:
+      - monitoring
 volumes:
   grafana-storage:
   es_data:
