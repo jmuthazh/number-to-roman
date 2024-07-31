@@ -7,6 +7,8 @@ This project demonstrates a Spring Boot application that converts numbers to Rom
 
 ## Table of Contents
 1. [Project Architecture](#1-project-architecture)
+   - 1.1 [Project overview](#11-project-overview)
+   - 1.2 [Architecture Diagram](#12-architecture-diagram)
 2. [Pre-requisites](#2-pre-requisites)
 3. [Install & Setup](#3-install-steps-to-set-up-project)
 4. [Credentials](#4-credentials)
@@ -18,7 +20,7 @@ This project demonstrates a Spring Boot application that converts numbers to Rom
 8. [References](#10-references)
 
 ## 1. **Project Architecture**
-### **Project overview:**
+### 1.1 **Project overview:**
 This Spring Boot Application architecture has monitoring, logging, and continuous integration/continuous deployment (CI/CD) using several tools. 
 <br/>The main components include:
 
@@ -31,10 +33,12 @@ This Spring Boot Application architecture has monitoring, logging, and continuou
 * Spring Boot Application: The application to be monitored and analyzed.
 * Sonar Runner: For running SonarQube analysis.
 * Network: A common network for all services to communicate.
+### 1.2 **Architecture Diagram**
 ![architecture.png](screenshots/architecture.png)
 
 
-### **Legends**
+
+#### **Legends**
 - **OpenTelemetry Collector**: Collects telemetry data from the application.
 - **Prometheus**: Collects and stores metrics.
 - **Grafana**: Visualizes metrics from Prometheus.
@@ -51,10 +55,23 @@ This Spring Boot Application architecture has monitoring, logging, and continuou
 ## 2. **Pre-requisites**
 Before you begin, ensure you have met the following requirements:
 
-- Docker and Docker Compose installed
-- Java Development Kit (JDK) 17 or higher
-- Maven for building the Spring Boot application
-  Basic understanding of Spring Boot, Docker, and monitoring/logging tools
+- Docker and Docker Compose installed (Docker - 20.10.16,  docker-compose version 1.29.2)
+```shell
+docker version
+docker-compose version
+```
+- Java Development Kit (JDK) 17 or higher (OpenJDK 17)
+```shell
+java -version
+```
+- Maven for building the Spring Boot application (Maven - 3.9.8 , SpringBoot - 3.3.2)
+```shell
+mvn -v
+```
+- OS used to run this setup: `OS name: "mac os x", version: "12.7.5", arch: "x86_64", family: "mac"`
+
+- Basic understanding of Spring Boot, Docker, and monitoring/logging tools
+
 ## 3. **Install steps to set up Project**
   1. **Clone the Repository**
       ```bash
@@ -98,19 +115,18 @@ sonarqube-db              docker-entrypoint.sh postgres    Up             5432/t
 > If you encounter issues with your container not starting or showing errors, make sure to run the `./builDeploy.sh` script from the `/scripts` folder repeatedly until the problem is resolved. 
 
 ## 4. **Credentials**
-1. **Sonar Qube**
-    ```sh
-    http://localhost:9000
-    ```
-user: admin<br/> password: admin
+
+1. **Grafana**: http://localhost:3000 (admin/admin)
+2. **Sonar Qube**: http://localhost:9000/ (admin/admin)
+
 ## 5. **All Service Endpoint Details**
   - **Conversion Service Endpoint**
     - **Swagger:** http://localhost:8080/swagger-ui/index.html
-    - **Conversion Service API:**
-      - **API for Number:** http://localhost:8080/romannumeral?query=400
-      - **API for Range:** http://localhost:8080/romannumeral?min=5&max=100
+      - **Conversion Service API:**
+        - **API for Number:** http://localhost:8080/romannumeral?query=400
+        - **API for Range:** http://localhost:8080/romannumeral?min=5&max=100
       
-        > Note:
+      > [!NOTE]
       (Number Range should be from min: >=1, max <= 3999)
     - **Spring Metrics**
       - Spring Actuator: http://localhost:8080/actuator
@@ -122,17 +138,17 @@ user: admin<br/> password: admin
   - **Sonar Qube**: http://localhost:9000/ (admin/admin)
 
 ## 6. **Junit, Integration Test and Sonarqube CodeCoverage**
-### **Junit Testing**
+### 6.1 **Junit Testing**
 - [NumberToRomanServiceImplTest.java](src/test/java/com/adobe/convertor/service/impl/NumberToRomanServiceImplTest.java)
 - [NumberToRomanControllerTest.java](src/test/java/com/adobe/convertor/controller/NumberToRomanControllerTest.java)
 - [InputValidationTest.java](src/test/java/com/adobe/convertor/validation/InputValidationTest.java)
 - [NumberToRomanApplicationTest.java](src/test/java/com/adobe/convertor/NumberToRomanApplicationTest.java)
 - [SwaggerConfigTest.java](src/test/java/com/adobe/convertor/config/SwaggerConfigTest.java)
-### **Integration Test**
+### 6.2 **Integration Test**
 - This test runs the end to end integration test and pass actual values to the service.
 -[NumberToRomanIntegrationTest.java](src/integration-test/java/com/adobe/convertor/integration/NumberToRomanIntegrationTest.java)
-### **Sonar Code Coverage**
-#### **Follow the steps to run the Sonar Code Coverage**
+### 6.3 **Sonar Code Coverage**
+#### 6.3.1 **Follow the steps to run the Sonar Code Coverage**
    1. Login into this http://localhost:9000/ (admin/admin)
    2. Go to http://localhost:9000/account/security
    3. Generate Sonar Qube Token as follows: Enter ***Name, Type, Project, Expires***
@@ -153,7 +169,7 @@ user: admin<br/> password: admin
    ![sonq-qube.jpeg](screenshots/sonar-qube.jpeg)
 
 ## 7 . **Logging & Monitoring - ELK Stack**
-### **Kibana Dashboard** 
+### 7.1 **Kibana Dashboard** 
 1. Login into Kibana http://localhost:5601/ 
 2. Navigate to this path: http://localhost:5601/app/management/kibana/indexPatterns
 3. Click on ***Create index pattern***
@@ -166,7 +182,7 @@ user: admin<br/> password: admin
     ![kibana.png](screenshots/kibana.png)
 
 ## 8 . **Grafana, Prometheus Dashboard & Monitoring Metrics**
-### **Access Grafana**
+### 8.1 **Access Grafana**
 1. Login into http://localhost:3000
 2. UserId: admin , Password: admin
 3. Go to `/Dashboards` folder 

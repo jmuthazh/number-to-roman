@@ -36,8 +36,8 @@ class NumberToRomanServiceImplTest {
 
     @Test
     void testConvertToRomanNumeral_Valid() {
-        String result = numberToRomanService.convertToRomanNumeral(1994);
-        assertEquals("MCMXCIV", result);
+        ConversionResult result = numberToRomanService.convertToRomanNumeral(1994);
+        assertEquals("MCMXCIV", result.getOutput());
     }
 
     @Test

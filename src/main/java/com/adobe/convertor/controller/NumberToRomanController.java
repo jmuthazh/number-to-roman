@@ -8,6 +8,7 @@ package com.adobe.convertor.controller;
 
 
 import com.adobe.convertor.bean.ConversionResponse;
+import com.adobe.convertor.bean.ConversionResult;
 import com.adobe.convertor.exception.InvalidInputException;
 import com.adobe.convertor.service.NumberToRomanService;
 import com.adobe.convertor.validation.InputValidation;
@@ -48,9 +49,9 @@ public class NumberToRomanController {
         if (query != null) {
             try {
                 int number = InputValidation.validateAndParseText(query);
-                String roman = numberToRomanService.convertToRomanNumeral(number);
-                log.info("Converted number {} to Roman numeral {}", number, roman);
-                return roman;
+                ConversionResult result = numberToRomanService.convertToRomanNumeral(number);
+                log.info("Converted number {} to Roman numeral {}", result.getInput(), result.getOutput());
+                return result;
             } catch (InvalidInputException ex) {
                 log.error("Invalid input for query parameter: {}", query, ex);
                 throw ex;

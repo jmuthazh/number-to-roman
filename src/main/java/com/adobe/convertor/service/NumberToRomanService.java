@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface NumberToRomanService {
 
-    String convertToRomanNumeral(int number);
+    ConversionResult convertToRomanNumeral(int number);
 
     List<ConversionResult> convertRangeToRoman(int min, int max);
 }

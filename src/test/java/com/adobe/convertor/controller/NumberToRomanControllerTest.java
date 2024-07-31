@@ -27,12 +27,11 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(NumberToRomanController.class)
-public class NumberToRomanControllerTest {
+class NumberToRomanControllerTest {
 
     @MockBean
     private NumberToRomanService numberToRomanService;
@@ -48,20 +47,22 @@ public class NumberToRomanControllerTest {
 
 
     @Test
-    public void testConvertToRoman_SingleNumber() throws Exception {
-        when(numberToRomanService.convertToRomanNumeral(5)).thenReturn("V");
+    void testConvertToRoman_SingleNumber() throws Exception {
+        ConversionResult conversionResult = new ConversionResult("5", "V");
+        when(numberToRomanService.convertToRomanNumeral(5)).thenReturn(conversionResult);
 
         mockMvc.perform(get("/romannumeral")
                         .param("query", "5")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("V"));
+                .andExpect(jsonPath("$.input").value("5"))
+                .andExpect(jsonPath("$.output").value("V"));
 
         verify(numberToRomanService, times(1)).convertToRomanNumeral(5);
     }
 
     @Test
-    public void testConvertToRoman_Range() throws Exception {
+    void testConvertToRoman_Range() throws Exception {
         ConversionResponse response = new ConversionResponse(
                 List.of(new ConversionResult("1", "I"), new ConversionResult("2", "II"))
         );
@@ -79,7 +80,7 @@ public class NumberToRomanControllerTest {
 
 
     @Test
-    public void testConvertToRoman_InvalidInput() throws Exception {
+    void testConvertToRoman_InvalidInput() throws Exception {
         mockMvc.perform(get("/romannumeral")
                         .param("query", "invalid")
                         .accept(MediaType.APPLICATION_JSON))
@@ -90,7 +91,7 @@ public class NumberToRomanControllerTest {
     }
 
     @Test
-    public void testConvertToRoman_InvalidRange() throws Exception {
+    void testConvertToRoman_InvalidRange() throws Exception {
         doThrow(new InvalidInputException("Invalid range. Ensure min < max and both are in the range 1-3999."))
                 .when(numberToRomanService).convertRangeToRoman(5, 3);
         mockMvc.perform(get("/romannumeral")

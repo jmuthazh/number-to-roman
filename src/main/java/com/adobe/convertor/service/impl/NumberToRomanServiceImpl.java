@@ -31,7 +31,7 @@ public class NumberToRomanServiceImpl implements NumberToRomanService {
      * @throws InvalidInputException if the number is out of range (1-3999)
      */
     @Override
-    public String convertToRomanNumeral(int number) {
+    public ConversionResult convertToRomanNumeral(int number) {
         if (number < 1 || number > 3999) {
             throw new InvalidInputException("Number out of range (1-3999): " + number);
         }
@@ -41,10 +41,11 @@ public class NumberToRomanServiceImpl implements NumberToRomanService {
         String[] tens = {"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"};
         String[] units = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"};
 
-        return thousands[number / 1000] +
+        String romanNumeral = thousands[number / 1000] +
                 hundreds[(number % 1000) / 100] +
                 tens[(number % 100) / 10] +
                 units[number % 10];
+        return new ConversionResult(String.valueOf(number), romanNumeral);
     }
 
     /**
@@ -87,7 +88,7 @@ public class NumberToRomanServiceImpl implements NumberToRomanService {
      * @return a CompletableFuture containing the ConversionResult with the original number and its Roman numeral representation
      */
     CompletableFuture<ConversionResult> convertToRomanAsync(int number) {
-        return CompletableFuture.supplyAsync(() -> new ConversionResult(String.valueOf(number), convertToRomanNumeral(number)));
+        return CompletableFuture.supplyAsync(() -> new ConversionResult(String.valueOf(number), convertToRomanNumeral(number).getOutput()));
     }
 }
 
