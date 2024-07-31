@@ -12,6 +12,7 @@ This project demonstrates a Spring Boot application that converts numbers to Rom
 4. [Credentials](#4-credentials)
 5. [All Service Endpoint Details](#5-all-service-endpoint-details)
 6. [Run Test](#6-run-test)
+7. [Logging & Monitoring - ELK Stack]
 7. [Shutdown Service & Clean Up](#7-shutdown-service--clean-up-docker)
 8. [References](#8-references)
 
@@ -99,12 +100,36 @@ user: admin<br/> password: admin
     - This test runs the end to end integration test and pass actual values to the service.
       -[NumberToRomanIntegrationTest.java](src/integration-test/java/com/adobe/convertor/integration/NumberToRomanIntegrationTest.java)
 3. **Sonar Code Coverage**
+   1. **Steps to follow to run code coverage**
+      1. Login into this http://localhost:9000/ (admin/admin)
+      2. Go to http://localhost:9000/account/security
+      3. Generate Sonar Qube Token as follow
+      ![gnerate-newtoken](screenshots/generate-newtoken.jpeg)
+      4. Copy the generated token and save it under [.env](docker/.env) ,  also make sure to update the new password for SONAR_PASSWORD
+       ```bash
+         SONAR_TOKEN=<token>
+         SONAR_USER=admin
+         SONAR_PASSWORD=Sonar@123
+      ```
+        ![copy-token.jpeg](screenshots/copy-token.jpeg)
+      
     ```bash
-    docker exec -it docker docker_app_1 /bin/bash
-    mvn clean verify sonar:sonar -Dsonar.projectKey='number-to-roman'   -Dsonar.projectName='number-to-roman' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_5f01fe9dcfb9280aec10e6f71ea9122b1589c6b0
+    http://localhost:9000/dashboard?id=number-to-roman&codeScope=overall
+    
     ```
     Code Coverage Report
     ![sonq-qube.jpeg](screenshots/sonar-qube.jpeg)
+## 7 . **Logging & Monitoring - ELK Stack**
+#### **Kibana Dashboard** 
+1. Login into Kibana http://localhost:5601/ 
+2. Navigate to this path: http://localhost:5601/app/management/kibana/indexPatterns
+3. Click on ***Create index pattern***
+![create-index.jpeg](screenshots/create-index.jpeg)
+4. Enter the name as `logstash-*` and select Timestamp field as '@timestamp' , click on Create Index pattern.
+    Follow the sequence in the screenshot
+   ![create-index-logstash.jpeg](screenshots/create-index-logstash.jpeg) 
+5. Navigate to this url : http://localhost:5601/app/discover
+6. Kibana Dashboard View
 
 ## 7. **Shutdown Service & Clean up Docker**
 ```bash

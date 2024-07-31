@@ -13,7 +13,6 @@ services:
     networks:
       - monitoring
 
-
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -84,32 +83,20 @@ services:
       retries: 5
 
   filebeat:
-    user: root
     image: docker.elastic.co/beats/filebeat:7.17.22
     links:
       - logstash:logstash
     container_name: filebeat
     volumes:
-      - /var/run/docker.sock:/host_docker/docker.sock
-      - /var/lib/docker:/host_docker/var/lib/docker
       - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
       - ./logs:/var/share/filebeat/logs:ro
-    command: ["--strict.perms=false"]
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    stdin_open: true
-    tty: true
-    deploy:
-      mode: global
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "50"
     networks:
       - monitoring
+
     depends_on:
       - logstash
     healthcheck:
@@ -123,6 +110,7 @@ services:
     container_name: logstash
     networks:
       - monitoring
+
     environment:
       - LS_JAVA_OPTS=-Xms256m -Xmx256m
       - ELASTIC_USER=elastic
@@ -135,11 +123,6 @@ services:
     volumes:
       - ./logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
       - ./logstash/templates/logstash.template.json:/usr/share/logstash/templates/logstash.template.json
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "50"
     depends_on:
       - elasticsearch
     restart: unless-stopped
