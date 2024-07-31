@@ -18,8 +18,15 @@ logging integrations using Grafana, Prometheus, and the ELK (Elasticsearch, Logs
 4. [Credentials](#4-credentials)
 5. [All Service Endpoint Details](#5-all-service-endpoint-details)
 6. [Junit, Integration Test and Sonarqube CodeCoverage](#6-junit-integration-test-and-sonarqube-codecoverage)
+    - 6.1 [Test Scenario's](#61-test-scenarios)
+    - 6.2 [Junit Testing](#62-junit-testing)
+    - 6.3 [Integration Test](#63-integration-test)
+    - 6.4 [Sonar Code Coverage](#64-sonar-code-coverage)
+      - 6.4.1 [ Follow the steps to run the Sonar Code Coverage](#641-follow-the-steps-to-run-the-sonar-code-coverage)
 7. [Logging & Monitoring - ELK Stack](#7--logging--monitoring---elk-stack)
+    - 7.1 [Kibana Dashboard](#71-kibana-dashboard)
 8. [Grafana, Prometheus Dashboard & Monitoring](#8--grafana-prometheus-dashboard--monitoring-metrics)
+    - 8.1 [Access Grafana](#81-access-grafana)
 7. [Shutdown Service & Clean Up](#9-shutdown-service--clean-up-docker)
 8. [References](#10-references)
 
@@ -316,7 +323,7 @@ script from the `/scripts` folder repeatedly until the problem is resolved.
   "details": "uri=/romannumeral"
 }
 ```
-### 6.1 **Junit Testing**
+### 6.2 **Junit Testing**
 
 - [NumberToRomanServiceImplTest.java](src/test/java/com/adobe/convertor/service/impl/NumberToRomanServiceImplTest.java)
 - [NumberToRomanControllerTest.java](src/test/java/com/adobe/convertor/controller/NumberToRomanControllerTest.java)
@@ -324,14 +331,14 @@ script from the `/scripts` folder repeatedly until the problem is resolved.
 - [NumberToRomanApplicationTest.java](src/test/java/com/adobe/convertor/NumberToRomanApplicationTest.java)
 - [SwaggerConfigTest.java](src/test/java/com/adobe/convertor/config/SwaggerConfigTest.java)
 
-### 6.2 **Integration Test**
+### 6.3 **Integration Test**
 
 - This test runs the end to end integration test and pass actual values to the service.
   -[NumberToRomanIntegrationTest.java](src/integration-test/java/com/adobe/convertor/integration/NumberToRomanIntegrationTest.java)
 
-### 6.3 **Sonar Code Coverage**
+### 6.4 **Sonar Code Coverage**
 
-#### 6.3.1 **Follow the steps to run the Sonar Code Coverage**
+#### 6.4.1 **Follow the steps to run the Sonar Code Coverage**
 
 1. Login into this http://localhost:9000/ (admin/admin)
 2. Go to http://localhost:9000/account/security
