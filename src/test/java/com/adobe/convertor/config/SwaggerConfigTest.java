@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class SwaggerConfigTest {
+class SwaggerConfigTest {
 
  @Configuration
  static class TestConfig {
@@ -29,7 +29,7 @@ public class SwaggerConfigTest {
  }
 
  @Test
- public void testCustomOpenAPI() {
+ void testCustomOpenAPI() {
   SwaggerConfig swaggerConfig = new SwaggerConfig();
   OpenAPI openAPI = swaggerConfig.customOpenAPI();
 
