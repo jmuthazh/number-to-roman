@@ -94,7 +94,8 @@ prometheus                /bin/prometheus --config.f ...   Up (healthy)   0.0.0.
 sonarqube                 /opt/sonarqube/docker/entr ...   Up             0.0.0.0:9000->9000/tcp                                                
 sonarqube-db              docker-entrypoint.sh postgres    Up             5432/tcp                                         
 ```
-
+> [!IMPORTANT]
+> If you encounter issues with your container not starting or showing errors, make sure to run the `./builDeploy.sh` script from the `/scripts` folder repeatedly until the problem is resolved. 
 
 ## 4. **Credentials**
 1. **Sonar Qube**
