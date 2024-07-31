@@ -188,10 +188,18 @@ user: admin<br/> password: admin
 ```bash
  ./shutDown.sh
 ```
+- This cleans up docker-compose containers and remove orphans
+
 ## 10. **References**
-Spring Boot Documentation
-Grafana Documentation
-Prometheus Documentation
-Elasticsearch Documentation
-Logstash Documentation
-Kibana Documentation
+- [Roman Numerals](https://simple.wikipedia.org/wiki/Roman_numerals)
+- [Spring Boot Documentation](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
+- [Grafana Documentation](https://grafana.com/docs/)
+- [Prometheus Documentation](https://prometheus.io/docs/introduction/overview/)
+- [Filebeat Documentation](https://www.elastic.co/guide/en/beats/filebeat/current/index.html)
+- [Elasticsearch Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
+- [Logstash Documentation](https://www.elastic.co/guide/en/logstash/current/index.html)
+- [Kibana Documentation](https://www.elastic.co/guide/en/kibana/current/index.html)
+- [OpenTelemetry Documentation](https://opentelemetry.io/docs/)
+- [Docker Compose Documentation](https://docs.docker.com/compose/)
+- [SonarQube Documentation](https://docs.sonarqube.org/)
+
