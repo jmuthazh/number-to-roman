@@ -1,14 +1,6 @@
 #!/bin/bash
 
 # Wait for SonarQube to be available
-
-#!/bin/bash
-
-# Define SonarQube credentials
-SONAR_USER="your_username"
-SONAR_PASSWORD="your_password"
-
-# Wait for SonarQube to be available
 while true; do
   # Fetch the health status from SonarQube
   RESPONSE=$(curl -s -u $SONAR_USER:$SONAR_PASSWORD http://sonarqube:9000/api/system/health)
@@ -33,3 +25,4 @@ mvn clean verify sonar:sonar \
     -Dsonar.host.url=http://sonarqube:9000 \
     -Dsonar.login=$SONAR_TOKEN \
     -Dsonar.exclusions='**/com/adobe/convertor/exception/**,**/com/adobe/convertor/bean/**'
+
