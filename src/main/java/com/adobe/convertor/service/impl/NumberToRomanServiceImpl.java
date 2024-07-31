@@ -8,6 +8,7 @@ package com.adobe.convertor.service.impl;
 
 
 import com.adobe.convertor.bean.ConversionResult;
+import com.adobe.convertor.exception.ConversionProcessException;
 import com.adobe.convertor.exception.InvalidInputException;
 import com.adobe.convertor.service.NumberToRomanService;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
@@ -38,6 +38,14 @@ public class NumberToRomanServiceImpl implements NumberToRomanService {
                 units[number % 10];
     }
 
+    /**
+     * Converts a range of numbers to their Roman numeral representations.
+     *
+     * @param min the minimum number in the range (inclusive)
+     * @param max the maximum number in the range (inclusive)
+     * @return an unmodifiable list of ConversionResult containing the original number and its Roman numeral representation
+     * @throws InvalidInputException if the range is invalid or numbers are out of range (1-3999)
+     */
     @Override
     public List<ConversionResult> convertRangeToRoman(int min, int max) {
         if (min < 1 || max > 3999 || min > max) {
@@ -52,11 +60,15 @@ public class NumberToRomanServiceImpl implements NumberToRomanService {
                 .map(future -> {
                     try {
                         return future.get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        throw new RuntimeException("Error processing request", e);
+                    } catch (InterruptedException e) {
+                        // Re-interrupt the current thread
+                        Thread.currentThread().interrupt();
+                        throw new ConversionProcessException("Thread was interrupted", e);
+                    } catch (ExecutionException e) {
+                        throw new ConversionProcessException("Error processing request", e);
                     }
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private CompletableFuture<ConversionResult> convertToRomanAsync(int number) {
