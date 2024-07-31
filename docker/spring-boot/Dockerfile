@@ -3,7 +3,9 @@ FROM thingsboard/openjdk17:1.9.0
 
 # Update package list and install jq and maven
 RUN apt-get update && \
-    apt-get install -y jq maven
+    apt-get install -y jq maven && \
+    rm -rf /var/lib/apt/lists/*
+
 
 COPY maven-settings.xml /usr/src/app/.m2/settings.xml
 

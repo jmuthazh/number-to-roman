@@ -20,6 +20,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.IntStream;
 
+/**
+ * The {@code NumberToRomanServiceImpl} class implements the {@link NumberToRomanService} interface
+ * and provides methods to convert numbers to their Roman numeral representations.
+ * This class is annotated with {@link Service} to indicate that it is a Spring service component.
+ */
 @Service
 public class NumberToRomanServiceImpl implements NumberToRomanService {
 
@@ -27,7 +32,7 @@ public class NumberToRomanServiceImpl implements NumberToRomanService {
      * Converts a given number to its Roman numeral representation.
      *
      * @param number the number to be converted
-     * @return the Roman numeral representation of the number
+     * @return the {@link ConversionResult} containing the original number and its Roman numeral representation
      * @throws InvalidInputException if the number is out of range (1-3999)
      */
     @Override
@@ -53,8 +58,8 @@ public class NumberToRomanServiceImpl implements NumberToRomanService {
      *
      * @param min the minimum number in the range (inclusive)
      * @param max the maximum number in the range (inclusive)
-     * @return an unmodifiable list of ConversionResult containing the original number and its Roman numeral representation
-     * @throws InvalidInputException if the range is invalid or numbers are out of range (1-3999)
+     * @return a {@link List} of {@link ConversionResult} containing the original numbers and their Roman numeral representations
+     * @throws InvalidInputException if the range is invalid or if numbers are out of range (1-3999)
      */
     @Override
     public List<ConversionResult> convertRangeToRoman(int min, int max) {
@@ -85,7 +90,7 @@ public class NumberToRomanServiceImpl implements NumberToRomanService {
      * Asynchronously converts a given number to its Roman numeral representation.
      *
      * @param number the number to be converted
-     * @return a CompletableFuture containing the ConversionResult with the original number and its Roman numeral representation
+     * @return a {@link CompletableFuture} containing the {@link ConversionResult} with the original number and its Roman numeral representation
      */
     CompletableFuture<ConversionResult> convertToRomanAsync(int number) {
         return CompletableFuture.supplyAsync(() -> new ConversionResult(String.valueOf(number), convertToRomanNumeral(number).getOutput()));

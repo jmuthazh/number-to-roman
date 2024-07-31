@@ -22,17 +22,37 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * The {@code NumberToRomanController} class is a REST controller that handles requests for converting numbers to Roman numerals.
+ * It uses the {@link NumberToRomanService} to perform the conversions and the {@link InputValidation} class for validating input.
+ * This class is annotated with {@link RestController} to indicate that it is a Spring MVC controller and {@link Slf4j} for logging.
+ */
 @RestController
 @Slf4j
 public class NumberToRomanController {
 
     private final NumberToRomanService numberToRomanService;
 
+    /**
+     * Constructs a new {@code NumberToRomanController} with the specified {@link NumberToRomanService}.
+     *
+     * @param numberToRomanService the service used to perform number to Roman numeral conversions
+     */
     @Autowired
     public NumberToRomanController(NumberToRomanService numberToRomanService) {
         this.numberToRomanService = numberToRomanService;
     }
 
+
+    /**
+     * Converts a single number or a range of numbers to Roman numerals.
+     *
+     * @param query the number to be converted (optional)
+     * @param min   the minimum number in the range (optional)
+     * @param max   the maximum number in the range (optional)
+     * @return a {@link ConversionResult} if a single number is provided, or a {@link ConversionResponse} if a range is provided
+     * @throws InvalidInputException if the input is invalid
+     */
     @GetMapping("/romannumeral")
     @Operation(summary = "Convert number to Roman numeral",
             description = "Convert a number or a range of numbers to Roman numerals")
@@ -71,6 +91,6 @@ public class NumberToRomanController {
             throw new InvalidInputException("Either 'query' or both 'min' and 'max' parameters must be provided.");
         }
     }
-    
+
 }
 
