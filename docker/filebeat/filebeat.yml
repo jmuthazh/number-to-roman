@@ -5,13 +5,15 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /var/log/spring-boot/application.log
-    fields:
-      app_id: my-spring-boot-app
-    fields_under_root: true
+      - /usr/share/filebeat/logs/*.log
+
 
 output.logstash:
-  hosts: ["logstash:5000"]
+  hosts: ["logstash:5044"]
+
+processors:
+  - add_docker_metadata:
+      host: "unix:///host_docker/docker.sock"
 
 
 

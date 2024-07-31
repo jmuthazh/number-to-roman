@@ -84,6 +84,7 @@ services:
     networks:
       - elk
     environment:
+      - bootstrap.memory_lock=true
       - node.name=elasticsearch
       - cluster.name=elk-cluster
       - discovery.type=single-node
@@ -105,11 +106,30 @@ services:
       retries: 5
 
   filebeat:
+    user: root
     image: docker.elastic.co/beats/filebeat:7.17.22
+    links:
+      - logstash:logstash
     container_name: filebeat
     volumes:
+      - /var/run/docker.sock:/host_docker/docker.sock
+      - /var/lib/docker:/host_docker/var/lib/docker
       - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
-      - ./logs:/var/log/spring-boot:ro
+      - ./logs:/var/share/filebeat/logs:ro
+    command: ["--strict.perms=false"]
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    stdin_open: true
+    tty: true
+    deploy:
+      mode: global
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "50"
     networks:
       - elk
     depends_on:
@@ -135,11 +155,20 @@ services:
       - "5044:5044"  # Beats
       - "5000:5000"  # Logstash TCP input
     volumes:
-      - ./logstash/pipeline:/usr/share/logstash/pipeline
+      - ./logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
       - ./logstash/templates/logstash.template.json:/usr/share/logstash/templates/logstash.template.json
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "50"
     depends_on:
       - elasticsearch
     restart: unless-stopped
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:9600/_node/stats || exit 1"]
       interval: 10s
@@ -179,7 +208,14 @@ services:
       - SONAR_JDBC_PASSWORD=sonar
     volumes:
       - sonarqube_data:/opt/sonarqube
-
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:9000/api/system/health || exit 1" ]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 1m
+    networks:
+      - monitoring
   db:
     image: postgres:latest
     container_name: sonarqube-db
@@ -189,7 +225,13 @@ services:
       - POSTGRES_DB=sonarqube
     volumes:
       - sonarqube_db_data:/var/lib/postgresql/data
-
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U sonar -d sonarqube -h localhost" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - monitoring
 
 
 volumes:
