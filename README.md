@@ -195,12 +195,12 @@ script from the `/scripts` folder repeatedly until the problem is resolved.
 1. Positive Input:
 
 - http://localhost:8080/romannumeral?query=20
-    ```json
-    {
+```json
+{
     "input": "20",
     "output": "XX"
-    }
-    ``` 
+}
+``` 
 
 2. Negative Input:
 
