@@ -1,28 +1,6 @@
 version: '3.8'
 
 services:
-  app:
-    build:
-      context: ../
-      dockerfile: docker/spring-boot/Dockerfile
-    ports:
-      - "8080:8080"
-    environment:
-      - SPRING_PROFILES_ACTIVE=prod
-      - SONAR_HOST_URL=http://sonarqube:9000
-    restart: on-failure
-    networks:
-      - monitoring
-      - elk
-    depends_on:
-      elasticsearch:
-        condition: service_healthy
-      logstash:
-        condition: service_healthy
-      otel-collector:
-        condition: service_started
-      sonarqube:
-        condition: service_started
 
   otel-collector:
     image: otel/opentelemetry-collector:latest
@@ -82,7 +60,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.22
     container_name: elasticsearch
     networks:
-      - elk
+      - monitoring
     environment:
       - bootstrap.memory_lock=true
       - node.name=elasticsearch
@@ -131,7 +109,7 @@ services:
         max-size: "10m"
         max-file: "50"
     networks:
-      - elk
+      - monitoring
     depends_on:
       - logstash
     healthcheck:
@@ -144,7 +122,7 @@ services:
     image: docker.elastic.co/logstash/logstash:7.17.22
     container_name: logstash
     networks:
-      - elk
+      - monitoring
     environment:
       - LS_JAVA_OPTS=-Xms256m -Xmx256m
       - ELASTIC_USER=elastic
@@ -179,7 +157,7 @@ services:
     image: docker.elastic.co/kibana/kibana:7.17.22
     container_name: kibana
     networks:
-      - elk
+      - monitoring
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - XPACK_MONITORING_UI_CONTAINER_ELASTICSEARCH_ENABLED=true
@@ -209,7 +187,7 @@ services:
     volumes:
       - sonarqube_data:/opt/sonarqube
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:9000/api/system/health || exit 1" ]
+      test: [ "CMD-SHELL", "curl -f http://localhost:9000/ || exit 1" ]
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -233,15 +211,52 @@ services:
     networks:
       - monitoring
 
+  app:
+    build:
+      context: ../
+      dockerfile: docker/spring-boot/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SONAR_HOST_URL=http://sonarqube:9000
+    restart: on-failure
+    networks:
+      - monitoring
+    volumes:
+      - sonar-data:/usr/src/app
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      logstash:
+        condition: service_healthy
+      otel-collector:
+        condition: service_started
+      sonarqube:
+        condition: service_started
 
+  sonar-runner:
+    image: maven:3.8.1-openjdk-17
+    container_name: sonar-runner
+    volumes:
+      - sonar-data:/usr/src/app # Mount the shared volume
+    working_dir: /usr/src/app
+    environment:
+      SONAR_TOKEN: ${SONAR_TOKEN}
+    command: [ "/bin/bash", "-c", "./run-sonar.sh" ]
+    depends_on:
+      sonarqube:
+        condition: service_healthy
+    networks:
+      - monitoring
 volumes:
   grafana-storage:
   es_data:
+  sonar-data:
   sonarqube_db_data:
   sonarqube_data:
 
 networks:
   monitoring:
     driver: bridge
-  elk:
-    driver: bridge
+
