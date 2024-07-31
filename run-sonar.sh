@@ -12,5 +12,5 @@ mvn clean verify sonar:sonar \
     -Dsonar.host.url=http://sonarqube:9000 \
     -Dsonar.token=$SONAR_TOKEN \
     -Dsonar.exclusions='**/com/adobe/convertor/exception/**,**/com/adobe/convertor/bean/**' \
-    -Dsonar.scm.provider=git
+    -Dsonar.scm.disabled=true
 

@@ -7,13 +7,13 @@ package com.adobe.convertor.service.impl;
  */
 
 
-
-
 import com.adobe.convertor.bean.ConversionResult;
+import com.adobe.convertor.exception.ConversionProcessException;
 import com.adobe.convertor.exception.InvalidInputException;
-import com.adobe.convertor.service.NumberToRomanService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
@@ -22,23 +22,26 @@ import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class NumberToRomanServiceImplTest {
+class NumberToRomanServiceImplTest {
 
     @InjectMocks
     private NumberToRomanServiceImpl numberToRomanService;
+
+    @Mock
+    private CompletableFuture<ConversionResult> mockFuture;
 
     public NumberToRomanServiceImplTest() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testConvertToRomanNumeral_Valid() {
+    void testConvertToRomanNumeral_Valid() {
         String result = numberToRomanService.convertToRomanNumeral(1994);
         assertEquals("MCMXCIV", result);
     }
 
     @Test
-    public void testConvertToRomanNumeral_OutOfRange() {
+    void testConvertToRomanNumeral_OutOfRange() {
         InvalidInputException thrown = assertThrows(
                 InvalidInputException.class,
                 () -> numberToRomanService.convertToRomanNumeral(4000),
@@ -48,7 +51,7 @@ public class NumberToRomanServiceImplTest {
     }
 
     @Test
-    public void testConvertRangeToRoman_Valid() {
+    void testConvertRangeToRoman_Valid() {
         List<ConversionResult> results = numberToRomanService.convertRangeToRoman(1, 2);
         assertEquals(2, results.size());
         assertEquals("I", results.get(0).getOutput());
@@ -56,7 +59,7 @@ public class NumberToRomanServiceImplTest {
     }
 
     @Test
-    public void testConvertRangeToRoman_InvalidRange() {
+    void testConvertRangeToRoman_InvalidRange() {
         InvalidInputException thrown = assertThrows(
                 InvalidInputException.class,
                 () -> numberToRomanService.convertRangeToRoman(10, 5),
@@ -66,12 +69,48 @@ public class NumberToRomanServiceImplTest {
     }
 
     @Test
-    public void testConvertRangeToRoman_Async() throws ExecutionException, InterruptedException {
+    void testConvertRangeToRoman_Async()  {
         List<ConversionResult> results = numberToRomanService.convertRangeToRoman(1, 3);
         assertEquals(3, results.size());
         assertEquals("I", results.get(0).getOutput());
         assertEquals("II", results.get(1).getOutput());
         assertEquals("III", results.get(2).getOutput());
+    }
+
+    @Test
+    void testConvertRangeToRoman_InterruptedException() throws ExecutionException, InterruptedException {
+        // Mock the CompletableFuture to throw InterruptedException
+        Mockito.when(mockFuture.get()).thenThrow(new InterruptedException("Test InterruptedException"));
+
+        // Override the convertToRomanAsync method to return the mocked future
+        NumberToRomanServiceImpl numberToRomanServiceSpy = Mockito.spy(numberToRomanService);
+        Mockito.doReturn(mockFuture).when(numberToRomanServiceSpy).convertToRomanAsync(Mockito.anyInt());
+
+        RuntimeException thrown = assertThrows(
+                RuntimeException.class,
+                () -> numberToRomanServiceSpy.convertRangeToRoman(1, 1),
+                "Expected convertRangeToRoman to throw, but it didn't"
+        );
+        assertTrue(thrown.getMessage().contains("Thread was interrupted"));
+        assertInstanceOf(InterruptedException.class, thrown.getCause());
+    }
+
+    @Test
+    void testConvertRangeToRoman_ExecutionException() throws ExecutionException, InterruptedException {
+        // Mock the CompletableFuture to throw ExecutionException
+        Mockito.when(mockFuture.get()).thenThrow(new ExecutionException("Test ExecutionException", new Throwable()));
+
+        // Override the convertToRomanAsync method to return the mocked future
+        NumberToRomanServiceImpl numberToRomanServiceSpy = Mockito.spy(numberToRomanService);
+        Mockito.doReturn(mockFuture).when(numberToRomanServiceSpy).convertToRomanAsync(Mockito.anyInt());
+
+        ConversionProcessException thrown = assertThrows(
+                ConversionProcessException.class,
+                () -> numberToRomanServiceSpy.convertRangeToRoman(1, 1),
+                "Expected convertRangeToRoman to throw, but it didn't"
+        );
+        assertTrue(thrown.getMessage().contains("Error processing request"));
+        assertInstanceOf(ExecutionException.class, thrown.getCause());
     }
 }
 

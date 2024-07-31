@@ -1,6 +1,8 @@
 package com.adobe.convertor.service.impl;
 
 /*
+ * Implementation of the NumberToRomanService.
+ *
  * @project number-to-roman
  * @author jayakesavanmuthazhagan
  * @created - Jul, 28 2024 - 4:24 PM
@@ -21,6 +23,13 @@ import java.util.stream.IntStream;
 @Service
 public class NumberToRomanServiceImpl implements NumberToRomanService {
 
+    /**
+     * Converts a given number to its Roman numeral representation.
+     *
+     * @param number the number to be converted
+     * @return the Roman numeral representation of the number
+     * @throws InvalidInputException if the number is out of range (1-3999)
+     */
     @Override
     public String convertToRomanNumeral(int number) {
         if (number < 1 || number > 3999) {
@@ -71,7 +80,13 @@ public class NumberToRomanServiceImpl implements NumberToRomanService {
                 .toList();
     }
 
-    private CompletableFuture<ConversionResult> convertToRomanAsync(int number) {
+    /**
+     * Asynchronously converts a given number to its Roman numeral representation.
+     *
+     * @param number the number to be converted
+     * @return a CompletableFuture containing the ConversionResult with the original number and its Roman numeral representation
+     */
+    CompletableFuture<ConversionResult> convertToRomanAsync(int number) {
         return CompletableFuture.supplyAsync(() -> new ConversionResult(String.valueOf(number), convertToRomanNumeral(number)));
     }
 }
