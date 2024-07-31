@@ -170,7 +170,7 @@ user: admin<br/> password: admin
 2. UserId: admin , Password: admin
 3. Go to `/Dashboards` folder 
 > [!IMPORTANT]
-> [ ***Home >   Dashboards >   Dashboards*** ]
+> ***[ Home >   Dashboards >   Dashboards ]***
 
 ![grafana-dashboard.png](screenshots/grafana-dashboard.png)
 4. Open **JVM Micrometer** dashboard
