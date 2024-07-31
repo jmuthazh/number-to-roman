@@ -38,14 +38,15 @@ Before you begin, ensure you have met the following requirements:
   3. **Build and run the Docker container:**
 
       ```bash
-      docker-compose -f docker/docker-compose.yml up  -d --build
+     cd scripts
+     ./buildDeploy.sh
      ```
        
   After successful docker deployment, you should see the following containers running
 > [!NOTE]
 > Make sure all are containers are healthy, before using the service endpoints.
 ```bash
-docker-compose -f docker/docker-compose.yml ps -a
+./checkDockerStatus.sh
 ```
 ```sh
          Name                        Command                  State                                       Ports                                 
@@ -107,7 +108,7 @@ user: admin<br/> password: admin
 
 ## 7. **Shutdown Service & Clean up Docker**
 ```bash
- docker-compose -f docker/docker-compose.yml down --remove-orphans
+ ./shutDown.sh
 ```
 ## 8. **References**
 Spring Boot Documentation
