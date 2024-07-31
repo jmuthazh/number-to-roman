@@ -31,8 +31,8 @@ This Spring Boot Application architecture has monitoring, logging, and continuou
 * Spring Boot Application: The application to be monitored and analyzed.
 * Sonar Runner: For running SonarQube analysis.
 * Network: A common network for all services to communicate.
+![arc-diagram.png](screenshots/arc-diagram.png)
 
-![architecture-diagram2.png](screenshots/architecture-diagram2.png)
 
 ### **Legends**
 - **OpenTelemetry Collector**: Collects telemetry data from the application.
