@@ -55,6 +55,16 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.30</version>
@@ -101,20 +111,6 @@
             <version>1.31.0</version>
         </dependency>
 
-      <!--  &lt;!&ndash; OpenTelemetry Instrumentation for Spring Boot &ndash;&gt;
-        <dependency>
-            <groupId>io.opentelemetry.instrumentation</groupId>
-            <artifactId>opentelemetry-spring-boot-starter</artifactId>
-            <version>1.31.0-alpha</version>
-        </dependency>
-
-        &lt;!&ndash; OpenTelemetry Instrumentation for Logging (optional) &ndash;&gt;
-        <dependency>
-            <groupId>io.opentelemetry.instrumentation</groupId>
-            <artifactId>opentelemetry-logback-appender-1.0</artifactId>
-            <version>1.31.0-alpha</version>
-            <scope>runtime</scope>
-        </dependency>-->
 
         <!--- Test Dependencies -->
         <dependency>

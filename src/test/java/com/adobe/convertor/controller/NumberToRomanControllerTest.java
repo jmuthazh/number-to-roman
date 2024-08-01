@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -47,6 +48,7 @@ class NumberToRomanControllerTest {
 
 
     @Test
+    @WithMockUser(username = "user", roles = {"USER"})
     void testConvertToRoman_SingleNumber() throws Exception {
         ConversionResult conversionResult = new ConversionResult("5", "V");
         when(numberToRomanService.convertToRomanNumeral(5)).thenReturn(conversionResult);
@@ -62,6 +64,7 @@ class NumberToRomanControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "user", roles = {"USER"})
     void testConvertToRoman_Range() throws Exception {
         ConversionResponse response = new ConversionResponse(
                 List.of(new ConversionResult("1", "I"), new ConversionResult("2", "II"))
@@ -80,6 +83,7 @@ class NumberToRomanControllerTest {
 
 
     @Test
+    @WithMockUser(username = "user", roles = {"USER"})
     void testConvertToRoman_InvalidInput() throws Exception {
         mockMvc.perform(get("/romannumeral")
                         .param("query", "invalid")
@@ -91,6 +95,7 @@ class NumberToRomanControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "user", roles = {"USER"})
     void testConvertToRoman_InvalidRange() throws Exception {
         doThrow(new InvalidInputException("Invalid range. Ensure min < max and both are in the range 1-3999."))
                 .when(numberToRomanService).convertRangeToRoman(5, 3);

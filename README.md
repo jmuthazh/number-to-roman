@@ -143,12 +143,14 @@ script from the `/scripts` folder repeatedly until the problem is resolved.
 
 ## 4. **Credentials**
 
-1. **Grafana**: http://localhost:3000 (admin/admin)
+1. **Conversion Service**: http://localhost:8080/romannumeral?query=400 (admin/SuperSecretPass123)
+2. **Grafana**: http://localhost:3000 (admin/admin)
 2. **Sonar Qube**: http://localhost:9000/ (admin/admin)
 
 ## 5. **All Service Endpoint Details**
 
 - **Conversion Service Endpoint**
+    - Credential to consume this service: `admin/SuperSecretPass123`
     - **Swagger:** http://localhost:8080/swagger-ui/index.html
       ![swagger-index.png](screenshots/swagger-index.png)
         1. Query API: http://localhost:8080/romannumeral?query=200
