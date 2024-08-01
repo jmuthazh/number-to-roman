@@ -1,0 +1,126 @@
+.
+├── README.md
+├── docker
+│   ├── .env
+│   ├── docker-compose.yml
+│   ├── elasticsearch
+│   │   ├── Dockerfile
+│   │   └── elasticsearch.yml
+│   ├── filebeat
+│   │   ├── filebeat.yml
+│   │   ├── logs
+│   │   └── modules.d
+│   │       └── system.yml
+│   ├── grafana
+│   │   └── provisioning
+│   │       ├── dashboards
+│   │       │   ├── dashboard.yml
+│   │       │   ├── number-to-roman-dashboard.json
+│   │       │   ├── open-tele-dashboard.json
+│   │       │   ├── spring-boot-dashboard.json
+│   │       │   └── system-monitor.json
+│   │       └── datasources
+│   │           └── datasource.yml
+│   ├── kibana
+│   │   └── config
+│   │       └── kibana.yml
+│   ├── logstash
+│   │   ├── pipeline
+│   │   │   └── logstash.conf
+│   │   └── templates
+│   │       └── logstash.template.json
+│   ├── otel-collector
+│   │   └── otel-collector-config.yaml
+│   ├── prometheus
+│   │   └── prometheus.yml
+│   └── spring-boot
+│       └── Dockerfile
+├── logs
+│   ├── application.log
+│   └── application.log.2024-07-28.0.gz
+├── maven-settings.xml
+├── mvnw
+├── mvnw.cmd
+├── pom.xml
+├── run-sonar.sh
+├── screenshots
+│   ├── architecture.png
+│   ├── copy-token.jpeg
+│   ├── create-index-logstash.jpeg
+│   ├── create-index.jpeg
+│   ├── docker-container.jpeg
+│   ├── file-structure.txt
+│   ├── generate-newtoken.jpeg
+│   ├── grafana-dashboard.png
+│   ├── grafana-endpoint.png
+│   ├── grafana-jvm-micro-2.png
+│   ├── grafana-jvm-micro.png
+│   ├── grafana-otel.png
+│   ├── grafana-sys-monitor.png
+│   ├── kibana.png
+│   ├── sonar-myaccount.jpeg
+│   ├── sonar-qube.jpeg
+│   ├── swagger-index.png
+│   ├── swagger-query.png
+│   └── swagger-range.png
+├── scripts
+│   ├── buildDeploy.sh
+│   ├── checkDockerStatus.sh
+│   ├── dockerRun.sh
+│   ├── getContainerLogs.sh
+│   ├── restartDocker.sh
+│   ├── shutDown.sh
+│   └── testRateLimiter.sh
+├── sonar-project.properties
+└── src
+    ├── integration-test
+    │   └── java
+    │       └── com
+    │           └── adobe
+    │               └── convertor
+    │                   └── integration
+    │                       └── NumberToRomanIntegrationTest.java
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── adobe
+    │   │           └── convertor
+    │   │               ├── NumberToRomanApplication.java
+    │   │               ├── bean
+    │   │               │   ├── ConversionResponse.java
+    │   │               │   └── ConversionResult.java
+    │   │               ├── config
+    │   │               │   └── SwaggerConfig.java
+    │   │               ├── controller
+    │   │               │   └── NumberToRomanController.java
+    │   │               ├── exception
+    │   │               │   ├── ConversionProcessException.java
+    │   │               │   ├── ErrorDetails.java
+    │   │               │   ├── GlobalExceptionHandler.java
+    │   │               │   └── InvalidInputException.java
+    │   │               ├── service
+    │   │               │   ├── NumberToRomanService.java
+    │   │               │   └── impl
+    │   │               │       └── NumberToRomanServiceImpl.java
+    │   │               └── validation
+    │   │                   └── InputValidation.java
+    │   └── resources
+    │       ├── application.properties
+    │       └── logback.xml
+    └── test
+        └── java
+            └── com
+                └── adobe
+                    └── convertor
+                        ├── NumberToRomanApplicationTest.java
+                        ├── config
+                        │   └── SwaggerConfigTest.java
+                        ├── controller
+                        │   └── NumberToRomanControllerTest.java
+                        ├── service
+                        │   └── impl
+                        │       └── NumberToRomanServiceImplTest.java
+                        └── validation
+                            └── InputValidationTest.java
+
+50 directories, 73 files

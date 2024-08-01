@@ -27,8 +27,9 @@ logging integrations using Grafana, Prometheus, and the ELK (Elasticsearch, Logs
     - 7.1 [Kibana Dashboard](#71-kibana-dashboard)
 8. [Grafana, Prometheus Dashboard & Monitoring](#8--grafana-prometheus-dashboard--monitoring-metrics)
     - 8.1 [Access Grafana](#81-access-grafana)
-7. [Shutdown Service & Clean Up](#9-shutdown-service--clean-up-docker)
-8. [References](#10-references)
+9. [Shutdown Service & Clean Up](#9-shutdown-service--clean-up-docker)
+10. [Project File Layout](#10-project-files-layout)
+11. [References](#11-references)
 
 ## 1. **Project Architecture**
 
@@ -344,17 +345,25 @@ script from the `/scripts` folder repeatedly until the problem is resolved.
 2. Go to http://localhost:9000/account/security
 3. Generate Sonar Qube Token as follows: Enter ***Name, Type, Project, Expires***
    ![gnerate-newtoken](screenshots/generate-newtoken.jpeg)
-4. Copy the generated token and save it under [.env](docker/.env) file under `docker/.env` , also make sure to update
-   the new password for SONAR_PASSWORD
+4. Copy the generated token and save it in the [.env](docker/.env) file located at `docker/.env`. Also, update the `SONAR_PASSWORD` with the new password. The file should look like this:
+
     ```bash
-      SONAR_TOKEN=<token>
-      SONAR_USER=admin
-      SONAR_PASSWORD=Sonar@123
+    SONAR_TOKEN=<token>
+    SONAR_USER=admin
+    SONAR_PASSWORD=Sonar@123
+    ```
+
    ```
    ![copy-token.jpeg](screenshots/copy-token.jpeg)
 
+5. Re-run the `./buildDeploy.sh` script to pass the **generated token** and **new password** to SonarQube. Wait 1 to 3 minutes for the `sonar-runner` state to show `Exit 0`. Verify the state by executing `./checkDockerStatus.sh` to see if the container has exited.
 
-5. To view Code Coverage Report:
+**Note:** If you do not see the Sonar reports under `Projects > number-to-roman`, continue executing `./buildDeploy.sh` until the `sonar-runner` status shows `Up`.
+
+```shell
+sonar-runner               /usr/local/bin/mvn-entrypo ...   Exit 0  
+```
+6. To view Code Coverage Report:
    ```bash
       Go to :   http://localhost:9000/dashboard?id=number-to-roman&codeScope=overall
    ```
@@ -407,7 +416,139 @@ script from the `/scripts` folder repeatedly until the problem is resolved.
 
 - This cleans up docker-compose containers and remove orphans
 
-## 10. **References**
+## 10. **Project Files Layout**
+```
+number-to-roman
+├── README.md
+├── docker
+│   ├── .env
+│   ├── docker-compose.yml
+│   ├── elasticsearch
+│   │   ├── Dockerfile
+│   │   └── elasticsearch.yml
+│   ├── filebeat
+│   │   ├── filebeat.yml
+│   │   ├── logs
+│   │   └── modules.d
+│   │       └── system.yml
+│   ├── grafana
+│   │   └── provisioning
+│   │       ├── dashboards
+│   │       │   ├── dashboard.yml
+│   │       │   ├── number-to-roman-dashboard.json
+│   │       │   ├── open-tele-dashboard.json
+│   │       │   ├── spring-boot-dashboard.json
+│   │       │   └── system-monitor.json
+│   │       └── datasources
+│   │           └── datasource.yml
+│   ├── kibana
+│   │   └── config
+│   │       └── kibana.yml
+│   ├── logstash
+│   │   ├── pipeline
+│   │   │   └── logstash.conf
+│   │   └── templates
+│   │       └── logstash.template.json
+│   ├── otel-collector
+│   │   └── otel-collector-config.yaml
+│   ├── prometheus
+│   │   └── prometheus.yml
+│   └── spring-boot
+│       └── Dockerfile
+├── logs
+│   ├── application.log
+│   └── application.log.2024-07-28.0.gz
+├── maven-settings.xml
+├── mvnw
+├── mvnw.cmd
+├── pom.xml
+├── run-sonar.sh
+├── screenshots
+│   ├── architecture.png
+│   ├── copy-token.jpeg
+│   ├── create-index-logstash.jpeg
+│   ├── create-index.jpeg
+│   ├── docker-container.jpeg
+│   ├── file-structure.txt
+│   ├── generate-newtoken.jpeg
+│   ├── grafana-dashboard.png
+│   ├── grafana-endpoint.png
+│   ├── grafana-jvm-micro-2.png
+│   ├── grafana-jvm-micro.png
+│   ├── grafana-otel.png
+│   ├── grafana-sys-monitor.png
+│   ├── kibana.png
+│   ├── sonar-myaccount.jpeg
+│   ├── sonar-qube.jpeg
+│   ├── swagger-index.png
+│   ├── swagger-query.png
+│   └── swagger-range.png
+├── scripts
+│   ├── buildDeploy.sh
+│   ├── checkDockerStatus.sh
+│   ├── dockerRun.sh
+│   ├── getContainerLogs.sh
+│   ├── restartDocker.sh
+│   ├── shutDown.sh
+│   └── testRateLimiter.sh
+├── sonar-project.properties
+└── src
+    ├── integration-test
+    │   └── java
+    │       └── com
+    │           └── adobe
+    │               └── convertor
+    │                   └── integration
+    │                       └── NumberToRomanIntegrationTest.java
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── adobe
+    │   │           └── convertor
+    │   │               ├── NumberToRomanApplication.java
+    │   │               ├── bean
+    │   │               │   ├── ConversionResponse.java
+    │   │               │   └── ConversionResult.java
+    │   │               ├── config
+    │   │               │   └── SwaggerConfig.java
+    │   │               ├── controller
+    │   │               │   └── NumberToRomanController.java
+    │   │               ├── exception
+    │   │               │   ├── ConversionProcessException.java
+    │   │               │   ├── ErrorDetails.java
+    │   │               │   ├── GlobalExceptionHandler.java
+    │   │               │   └── InvalidInputException.java
+    │   │               ├── service
+    │   │               │   ├── NumberToRomanService.java
+    │   │               │   └── impl
+    │   │               │       └── NumberToRomanServiceImpl.java
+    │   │               └── validation
+    │   │                   └── InputValidation.java
+    │   └── resources
+    │       ├── application.properties
+    │       └── logback.xml
+    └── test
+        └── java
+            └── com
+                └── adobe
+                    └── convertor
+                        ├── NumberToRomanApplicationTest.java
+                        ├── config
+                        │   └── SwaggerConfigTest.java
+                        ├── controller
+                        │   └── NumberToRomanControllerTest.java
+                        ├── service
+                        │   └── impl
+                        │       └── NumberToRomanServiceImplTest.java
+                        └── validation
+                            └── InputValidationTest.java
+
+50 directories, 73 files
+
+
+
+```
+## 11. **References**
 
 - [Roman Numerals](https://simple.wikipedia.org/wiki/Roman_numerals)
 - [Spring Boot Documentation](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
