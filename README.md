@@ -379,11 +379,14 @@ ERROR: Encountered errors while bringing up the project.
 3. **Generate** the **sonar token** after changing the password and update the values in `docker/.env` file
 ```shell
 curl -u admin:Sonar@123 -X POST "http://localhost:9000/api/user_tokens/generate?name=test-token"
-
-After a successful execution of above CURL, you should see output similar to the following. Copy the token value and save it in the `docker/.env` file.
-
-{"login":"admin","name":"test-token","token":"dfdfdsfs123456777777dfsfdfdfsdfsdffsdfsdf","createdAt":"2024-08-02T07:07:51+0000","type":"USER_TOKEN"}%    
 ```
+
+- After a successful execution of above CURL, you should see output similar to the following. Copy the token value and save it in the `docker/.env` file.
+```shell
+{"login":"admin","name":"test-token","token":"dfdfdsfs123456777777dfsfdfdfsdfsdffsdfsdf","createdAt":"2024-08-02T07:07:51+0000","type":"USER_TOKEN"}%
+```
+    
+
 ![sonar-token-gen.jpeg](screenshots/sonar-token-gen.jpeg)
 
 
