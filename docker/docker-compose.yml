@@ -198,8 +198,6 @@ services:
     build:
       context: ../
       dockerfile: docker/spring-boot/Dockerfile
-    container_name: app
-    hostname: app
     ports:
       - "8080:8080"
     environment:
