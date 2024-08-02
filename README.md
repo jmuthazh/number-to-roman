@@ -432,6 +432,12 @@ ERROR: Encountered errors while bringing up the project.
 ```
 > **Note:** If the Sonar reports are not visible under `Projects > number-to-roman`, repeatedly running `./buildDeploy.sh` until the `sonar-runner` status shows `Up`.
 
+* To check logs in `sonar-runner`, execute this command
+```shell
+docker logs --follow sonar-runner
+```
+- It will show the execution of maven verify sonar:sonar. This should finish with maven Build successful at the end.
+
 
 ```shell
 sonar-runner               /usr/local/bin/mvn-entrypo ...   Exit 0  
