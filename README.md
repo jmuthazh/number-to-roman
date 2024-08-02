@@ -436,7 +436,7 @@ ERROR: Encountered errors while bringing up the project.
 ```shell
 docker logs --follow sonar-runner
 ```
-- It will show the execution of maven verify sonar:sonar. This should finish with maven Build successful at the end.
+> [!NOTE] It will show the execution of maven verify sonar:sonar. This should finish with maven Build successful at the end. This build takes approximately 3 to 5 mins to complete
 
 
 ```shell
