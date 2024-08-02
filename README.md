@@ -95,6 +95,8 @@ mvn -v
 - Basic understanding of Spring Boot, Docker, and monitoring/logging tools
 
 ## 3. **Install steps to set up Project**
+> [!NOTE]
+> Before starting, please note that the installation process may take approximately 2 to 3 minutes to complete, specifically during `buildDeploy`.
 
 1. **Clone the Repository**
     ```bash
@@ -363,7 +365,7 @@ ERROR: Encountered errors while bringing up the project.
 ### 6.3 **Integration Test**
 
 - This test runs the end to end integration test and pass actual values to the service.
-  -[NumberToRomanIntegrationTest.java](src/integration-test/java/com/adobe/convertor/integration/NumberToRomanIntegrationTest.java)
+  -[NumberToRomanIntegrationTest.java](src/test/java/com/adobe/convertor/integration/NumberToRomanIntegrationTest.java)
 
 ### 6.4 **Sonar Code Coverage**
 
