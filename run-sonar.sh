@@ -11,6 +11,6 @@ mvn clean verify sonar:sonar \
     -Dsonar.projectName='number-to-roman' \
     -Dsonar.host.url=http://sonarqube:9000 \
     -Dsonar.token=$SONAR_TOKEN \
-    -Dsonar.exclusions='**/com/adobe/convertor/exception/**,**/com/adobe/convertor/bean/**.**com/adobe/convertor/NumberToRomanApplication.java,**com/adobe/convertor/service/NumberToRomanService.java' \
+    -Dsonar.exclusions='**/com/adobe/convertor/exception/**,**/com/adobe/convertor/bean/**,**com/adobe/convertor/NumberToRomanApplication.java,**com/adobe/convertor/service/NumberToRomanService.java' \
     -Dsonar.scm.disabled=true
 
