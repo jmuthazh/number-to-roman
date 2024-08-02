@@ -1,6 +1,6 @@
 # Spring Boot - Number to Roman Conversion with Monitoring and Logging
 
-This project demonstrates a Spring Boot application that converts numbers to Roman numerals. It includes monitoring and
+This project demonstrates a Spring Boot application that converts numbers to Roman numerals. It supports Query and range API (1-3999). It includes monitoring and
 logging integrations using Grafana, Prometheus, and the ELK (Elasticsearch, Logstash, Kibana) stack.
 
 ## **Developer**
