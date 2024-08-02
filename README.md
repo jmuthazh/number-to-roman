@@ -388,9 +388,18 @@ After a successful execution of above CURL, you should see output similar to the
 
 ### **Run Sonar Analysis Report**
 
-1. Re-run the `./buildDeploy.sh` script to pass the **generated token** and **new password** to SonarQube. Wait 1 to 3 minutes for the `sonar-runner` state to show `Exit 0`. Verify the state by executing `./checkDockerStatus.sh` to see if the container has exited.
+1. Run this script only once ./restartDocker.sh script to pass the **generated token** and **new password** to SonarQube. Wait 1 to 3 minutes for the `sonar-runner` state to show `Exit 0`. Verify the state by executing `./checkDockerStatus.sh` to see if the container has exited. 
+- If its taking long time in `Creating <container>` then Ctrl+C to exit and Run `./buildDeploy.sh` until you see all Containers are created and running UP status
+```shell
+Creating grafana                 ... done
+Creating filebeat                ... done
+Creating sonar-runner            ... done
 
-> **Note:** If the Sonar reports are not visible under `Projects > number-to-roman`, continue running `./buildDeploy.sh` until the `sonar-runner` status shows `Up`.
+ERROR: for app  Container "df0d52428f08" is unhealthy.
+ERROR: Encountered errors while bringing up the project.
+
+```
+> **Note:** If the Sonar reports are not visible under `Projects > number-to-roman`, repeatedly running `./buildDeploy.sh` until the `sonar-runner` status shows `Up`.
 
 
 ```shell
