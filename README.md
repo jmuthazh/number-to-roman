@@ -417,6 +417,9 @@ curl -u admin:Sonar@123 -X POST "http://localhost:9000/api/user_tokens/generate?
 
    * Execute the script `./restartDocker.sh` once to pass the generated token and new password to SonarQube.
    * Wait for 1 to 3 minutes for the `sonar-runner` state to show `Exit 0`.
+   ```shell
+    sonar-runner               /usr/local/bin/mvn-entrypo ...   Exit 0
+    ```
 2. **Verify the Container Status:**
 
    * Check the status by running `./checkDockerStatus.sh` to see if the container has exited.
