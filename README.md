@@ -344,10 +344,30 @@ script from the `/scripts` folder repeatedly until the problem is resolved.
 #### 6.4.1 **Follow the steps to run the Sonar Code Coverage**
 
 1. Login into this http://localhost:9000/ (admin/admin)
-2. Go to http://localhost:9000/account/security
-3. Generate Sonar Qube Token as follows: Enter ***Name, Type, Project, Expires***
+2. **Password Change:**
+   - If SonarQube prompts you to change your password, update it to `Sonare@123`. This password should match the one specified in the `docker/.env` file.
+   - If you choose a different password, be sure to update the `.env` file accordingly.
+
+3. **Generate** the **sonar token** after changing the password and update the values in 'docker/.env' file
+```shell
+curl -u admin:Sonar@123 -X POST "http://localhost:9000/api/user_tokens/generate?name=test-token"
+
+After a successful execution of above CURL, you should see output similar to the following. Copy the token value and save it in the `docker/.env` file.
+
+{"login":"admin","name":"test-token","token":"dfdfdsfs123456777777dfsfdfdfsdfsdffsdfsdf","createdAt":"2024-08-02T07:07:51+0000","type":"USER_TOKEN"}%    
+```
+![sonar-token-gen.jpeg](screenshots/sonar-token-gen.jpeg)
+
+
+
+> **Note:** if you have already generated the token, you can skip the following step.
+#### **Alternative Method to Generate the Token in SonarQube UI (Skip this if the token has already been generated)**
+ 
+1. Login with same credential as above.  http://localhost:9000/ (admin/Sonar@123)
+5. Go to http://localhost:9000/account/security
+4. Generate Sonar Qube Token as follows: Enter ***Name, Type, Project, Expires***
    ![gnerate-newtoken](screenshots/generate-newtoken.jpeg)
-4. Copy the generated token and save it in the [.env](docker/.env) file located at `docker/.env`. Also, update the `SONAR_PASSWORD` with the new password. The file should look like this:
+5. Copy the generated token and save it in the [.env](docker/.env) file located at `docker/.env`. 
 
     ```bash
     SONAR_TOKEN=<token>
@@ -355,20 +375,24 @@ script from the `/scripts` folder repeatedly until the problem is resolved.
     SONAR_PASSWORD=Sonar@123
     ```
 
-   ```
+  
    ![copy-token.jpeg](screenshots/copy-token.jpeg)
 
-5. Re-run the `./buildDeploy.sh` script to pass the **generated token** and **new password** to SonarQube. Wait 1 to 3 minutes for the `sonar-runner` state to show `Exit 0`. Verify the state by executing `./checkDockerStatus.sh` to see if the container has exited.
 
-**Note:** If you do not see the Sonar reports under `Projects > number-to-roman`, continue executing `./buildDeploy.sh` until the `sonar-runner` status shows `Up`.
+### **Run Sonar Analysis Report**
+
+1. Re-run the `./buildDeploy.sh` script to pass the **generated token** and **new password** to SonarQube. Wait 1 to 3 minutes for the `sonar-runner` state to show `Exit 0`. Verify the state by executing `./checkDockerStatus.sh` to see if the container has exited.
+
+> **Note:** If the Sonar reports are not visible under `Projects > number-to-roman`, continue running `./buildDeploy.sh` until the `sonar-runner` status shows `Up`.
+
 
 ```shell
 sonar-runner               /usr/local/bin/mvn-entrypo ...   Exit 0  
 ```
-6. To view Code Coverage Report:
-   ```bash
-      Go to :   http://localhost:9000/dashboard?id=number-to-roman&codeScope=overall
-   ```
+2. To view Code Coverage Report:
+   
+   Go to: http://localhost:9000/dashboard?id=number-to-roman&codeScope=overall
+  
 
 ![sonq-qube.jpeg](screenshots/sonar-qube.jpeg)
 
@@ -393,7 +417,7 @@ sonar-runner               /usr/local/bin/mvn-entrypo ...   Exit 0
 
 1. Login into http://localhost:3000
 2. UserId: admin , Password: admin
-3. Go to `/Dashboards` folder
+3. Navigate to the `/Dashboards` folder on the left side and look for the `Dashboards` folder within it.
 
 > [!IMPORTANT]
 > ***[ Home >   Dashboards >   Dashboards ]***
