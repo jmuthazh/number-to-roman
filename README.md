@@ -123,24 +123,30 @@ After successful docker deployment, you should see the following containers runn
 ```
 
 ```sh
-         Name                        Command                  State                                       Ports                                 
-------------------------------------------------------------------------------------------------------------------------------------------------
-docker_app_1              java -javaagent:/usr/src/a ...   Up             0.0.0.0:8080->8080/tcp                                                
-docker_otel-collector_1   /otelcol --config /etc/ote ...   Up             0.0.0.0:4317->4317/tcp, 55678/tcp, 55679/tcp, 0.0.0.0:55681->55681/tcp
-elasticsearch             /bin/tini -- /usr/local/bi ...   Up (healthy)   0.0.0.0:9200->9200/tcp, 9300/tcp                                      
-filebeat                  /usr/bin/tini -- /usr/loca ...   Up (healthy)                                                                         
-grafana                   /run.sh                          Up (healthy)   0.0.0.0:3000->3000/tcp                                                
-kibana                    /bin/tini -- /usr/local/bi ...   Up (healthy)   0.0.0.0:5601->5601/tcp                                                
-logstash                  /usr/local/bin/docker-entr ...   Up (healthy)   0.0.0.0:5000->5000/tcp, 0.0.0.0:5044->5044/tcp, 9600/tcp              
-prometheus                /bin/prometheus --config.f ...   Up (healthy)   0.0.0.0:9090->9090/tcp                                                
-sonarqube                 /opt/sonarqube/docker/entr ...   Up             0.0.0.0:9000->9000/tcp                                                
-sonarqube-db              docker-entrypoint.sh postgres    Up             5432/tcp                                         
+         Name                        Command                   State                                        Ports                                 
+--------------------------------------------------------------------------------------------------------------------------------------------------
+app                       java -javaagent:/usr/src/a ...   Up               0.0.0.0:8080->8080/tcp                                                
+docker_otel-collector_1   /otelcol --config /etc/ote ...   Up               0.0.0.0:4317->4317/tcp, 55678/tcp, 55679/tcp, 0.0.0.0:55681->55681/tcp
+elasticsearch             /bin/tini -- /usr/local/bi ...   Up (healthy)     0.0.0.0:9200->9200/tcp, 9300/tcp                                      
+filebeat                  /usr/bin/tini -- /usr/loca ...   Up (unhealthy)                                                                         
+grafana                   /run.sh                          Up (healthy)     0.0.0.0:3000->3000/tcp                                                
+kibana                    /bin/tini -- /usr/local/bi ...   Up (healthy)     0.0.0.0:5601->5601/tcp                                                
+logstash                  /usr/local/bin/docker-entr ...   Up (healthy)     0.0.0.0:5000->5000/tcp, 0.0.0.0:5044->5044/tcp, 9600/tcp              
+prometheus                /bin/prometheus --config.f ...   Up (healthy)     0.0.0.0:9090->9090/tcp                                                
+sonar-runner              /usr/local/bin/mvn-entrypo ...   Up                                                                                     
+sonarqube                 /opt/sonarqube/docker/entr ...   Up (healthy)     0.0.0.0:9000->9000/tcp                                                
+sonarqube-db              docker-entrypoint.sh postgres    Up (healthy)     5432/tcp                                                              
+                                         
 ```
 
 > [!IMPORTANT]
 > If you encounter issues with your container not starting or showing errors, make sure to run the `./builDeploy.sh`
 script from the `/scripts` folder repeatedly until the problem is resolved.
+```shell
+ERROR: for app  Container "da423aaae8e0" is unhealthy.
+ERROR: Encountered errors while bringing up the project.
 
+```
 ## 4. **Credentials**
 
 1. **Conversion Service**: http://localhost:8080/romannumeral?query=400 (admin/SuperSecretPass123)
@@ -343,12 +349,12 @@ script from the `/scripts` folder repeatedly until the problem is resolved.
 
 #### 6.4.1 **Follow the steps to run the Sonar Code Coverage**
 
-1. Login into this http://localhost:9000/ (admin/admin)
+1. Login into **SonarQube**: http://localhost:9000/ (admin/admin)
 2. **Password Change:**
    - If SonarQube prompts you to change your password, update it to `Sonare@123`. This password should match the one specified in the `docker/.env` file.
    - If you choose a different password, be sure to update the `.env` file accordingly.
 
-3. **Generate** the **sonar token** after changing the password and update the values in 'docker/.env' file
+3. **Generate** the **sonar token** after changing the password and update the values in `docker/.env` file
 ```shell
 curl -u admin:Sonar@123 -X POST "http://localhost:9000/api/user_tokens/generate?name=test-token"
 
@@ -394,7 +400,7 @@ sonar-runner               /usr/local/bin/mvn-entrypo ...   Exit 0
    Go to: http://localhost:9000/dashboard?id=number-to-roman&codeScope=overall
   
 
-![sonq-qube.jpeg](screenshots/sonar-qube.jpeg)
+![sonq-qube.png](screenshots/sonar-qube.png)
 
 ## 7 . **Logging & Monitoring - ELK Stack**
 

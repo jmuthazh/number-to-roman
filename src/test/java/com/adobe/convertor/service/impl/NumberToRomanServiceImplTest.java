@@ -69,7 +69,7 @@ class NumberToRomanServiceImplTest {
     }
 
     @Test
-    void testConvertRangeToRoman_Async()  {
+    void testConvertRangeToRoman_Async() {
         List<ConversionResult> results = numberToRomanService.convertRangeToRoman(1, 3);
         assertEquals(3, results.size());
         assertEquals("I", results.get(0).getOutput());

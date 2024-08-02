@@ -10,7 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class NumberToRomanApplicationTest {
+class NumberToRomanApplicationTest {
     @Test
-    void contextLoads() {}
+    void contextLoads() {
+    }
 }

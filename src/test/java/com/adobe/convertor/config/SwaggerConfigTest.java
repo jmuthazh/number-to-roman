@@ -20,23 +20,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 class SwaggerConfigTest {
 
- @Configuration
- static class TestConfig {
-  @Bean
-  public SwaggerConfig swaggerConfig() {
-   return new SwaggerConfig();
-  }
- }
+    @Configuration
+    static class TestConfig {
+        @Bean
+        public SwaggerConfig swaggerConfig() {
+            return new SwaggerConfig();
+        }
+    }
 
- @Test
- void testCustomOpenAPI() {
-  SwaggerConfig swaggerConfig = new SwaggerConfig();
-  OpenAPI openAPI = swaggerConfig.customOpenAPI();
+    @Test
+    void testCustomOpenAPI() {
+        SwaggerConfig swaggerConfig = new SwaggerConfig();
+        OpenAPI openAPI = swaggerConfig.customOpenAPI();
 
-  assertThat(openAPI).isNotNull();
-  assertThat(openAPI.getInfo()).isNotNull();
-  assertThat(openAPI.getInfo().getTitle()).isEqualTo("Number to Roman Converter API");
-  assertThat(openAPI.getInfo().getVersion()).isEqualTo("1.0");
-  assertThat(openAPI.getInfo().getDescription()).isEqualTo("API for converting numbers to Roman numerals");
- }
+        assertThat(openAPI).isNotNull();
+        assertThat(openAPI.getInfo()).isNotNull();
+        assertThat(openAPI.getInfo().getTitle()).isEqualTo("Number to Roman Converter API");
+        assertThat(openAPI.getInfo().getVersion()).isEqualTo("1.0");
+        assertThat(openAPI.getInfo().getDescription()).isEqualTo("API for converting numbers to Roman numerals");
+    }
 }
