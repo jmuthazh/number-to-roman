@@ -335,11 +335,30 @@ ERROR: Encountered errors while bringing up the project.
 ```
 ### 6.2 **Junit Testing**
 
-- [NumberToRomanServiceImplTest.java](src/test/java/com/adobe/convertor/service/impl/NumberToRomanServiceImplTest.java)
-- [NumberToRomanControllerTest.java](src/test/java/com/adobe/convertor/controller/NumberToRomanControllerTest.java)
-- [InputValidationTest.java](src/test/java/com/adobe/convertor/validation/InputValidationTest.java)
-- [NumberToRomanApplicationTest.java](src/test/java/com/adobe/convertor/NumberToRomanApplicationTest.java)
-- [SwaggerConfigTest.java](src/test/java/com/adobe/convertor/config/SwaggerConfigTest.java)
+* [NumberToRomanServiceImplTest.java](src/test/java/com/adobe/convertor/service/impl/NumberToRomanServiceImplTest.java) 
+  - This test class verifies `NumberToRomanController` endpoints using `MockMvc`, including **valid** and **invalid** conversions, **error** **handling**, and **parameter checks**, ensuring the controller interacts correctly with NumberToRomanService.
+* [NumberToRomanControllerTest.java](src/test/java/com/adobe/convertor/controller/NumberToRomanControllerTest.java) :
+  - This test class verifies the `NumberToRomanController` using `MockMvc` to ensure correct handling of conversion requests. It tests **valid** and **invalid** conversions, checks error handling for **invalid inputs and ranges,** and **verifies** that the service methods are called as expected.
+* [InputValidationTest.java](src/test/java/com/adobe/convertor/validation/InputValidationTest.java)
+   - This test class verifies the `InputValidation` utility:
+    
+     - **Private Constructor**: Ensures the class cannot be instantiated via a private constructor.
+     - **Single Number Validation**: Tests **valid** and **invalid** inputs for single numbers, checking proper **exception handling**.
+     - **Range Validation:** Tests **valid** and **invalid** ranges, ensuring correct exception handling for out-of-bounds values.
+     - **Text Parsing**: **Validates** and **parses** text inputs, ensuring exceptions are thrown for **invalid formats** and **out-of-range** values.
+- [NumberToRomanApplicationTest.java](src/test/java/com/adobe/convertor/NumberToRomanApplicationTest.java):
+  - This test class verifies that the Spring Boot application context loads successfully. It checks if the application starts without any issues.
+- [SwaggerConfigTest.java](src/test/java/com/adobe/convertor/config/SwaggerConfigTest.java):
+  - This test class verifies the configuration of Swagger API documentation:
+
+    - **Custom OpenAPI Configuration:** Tests the `customOpenAPI` method of `SwaggerConfig` to ensure it returns a properly configured `OpenAPI` object.
+    - **Assertions:** Checks that the `OpenAPI` object is not null and contains correct title, version, and description values.
+- [SecurityConfigTest.java](src/test/java/com/adobe/convertor/security/SecurityConfigTest.java):
+  - This test class checks the security configuration:
+
+    * **Actuator Endpoint:** Ensures the /actuator/health endpoint is accessible without authentication.
+    * **Protected Endpoint:** Confirms that the /romannumeral endpoint requires authentication.
+    * **Authenticated Access:** Verifies that authenticated users can access the /romannumeral endpoint.
 
 ### 6.3 **Integration Test**
 
