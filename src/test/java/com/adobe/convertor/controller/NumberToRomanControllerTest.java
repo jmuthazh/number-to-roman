@@ -108,4 +108,17 @@ class NumberToRomanControllerTest {
 
         verify(numberToRomanService, never()).convertRangeToRoman(5, 3);
     }
+
+    @Test
+    @WithMockUser(username = "user", roles = {"USER"})
+    void testConvertToRoman_NoInput() throws Exception {
+        doThrow(new InvalidInputException("Either 'query' or both 'min' and 'max' parameters must be provided."))
+                .when(numberToRomanService).convertRangeToRoman(5, 3);
+        mockMvc.perform(get("/romannumeral")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertInstanceOf(InvalidInputException.class, result.getResolvedException()));
+
+        verify(numberToRomanService, never()).convertRangeToRoman(5, 3);
+    }
 }
