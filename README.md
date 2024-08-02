@@ -573,13 +573,6 @@ number-to-roman
 │   └── shutDown.sh
 ├── sonar-project.properties
 └── src
-    ├── integration-test
-    │   └── java
-    │       └── com
-    │           └── adobe
-    │               └── convertor
-    │                   └── integration
-    │                       └── NumberToRomanIntegrationTest.java
     ├── main
     │   ├── java
     │   │   └── com
@@ -619,6 +612,8 @@ number-to-roman
                         │   └── SwaggerConfigTest.java
                         ├── controller
                         │   └── NumberToRomanControllerTest.java
+                        ├── integration
+                        │   └── NumberToRomanIntegrationTest.java
                         ├── security
                         │   └── SecurityConfigTest.java
                         ├── service
@@ -627,7 +622,7 @@ number-to-roman
                         └── validation
                             └── InputValidationTest.java
 
-50 directories, 72 files
+45 directories, 72 files
 
 ```
 ## 11. **References**
