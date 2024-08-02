@@ -388,8 +388,18 @@ After a successful execution of above CURL, you should see output similar to the
 
 ### **Run Sonar Analysis Report**
 
-1. Run this script only once ./restartDocker.sh script to pass the **generated token** and **new password** to SonarQube. Wait 1 to 3 minutes for the `sonar-runner` state to show `Exit 0`. Verify the state by executing `./checkDockerStatus.sh` to see if the container has exited. 
-- If its taking long time in `Creating <container>` then Ctrl+C to exit and Run `./buildDeploy.sh` until you see all Containers are created and running UP status
+**Steps to Run the Script and Verify Docker Status**
+1. **Run the Initial Script:**
+
+   * Execute the script `./restartDocker.sh` once to pass the generated token and new password to SonarQube.
+   * Wait for 1 to 3 minutes for the `sonar-runner` state to show `Exit 0`.
+2. **Verify the Container Status:**
+
+   * Check the status by running `./checkDockerStatus.sh` to see if the container has exited.
+3. **If the Container is Stuck:**
+   * If you see the status `Creating <container>` for a long time, press `Ctrl+C` to exit.
+   * Then, run `./buildDeploy.sh` repeatedly until all containers show UP status.
+
 ```shell
 Creating grafana                 ... done
 Creating filebeat                ... done
