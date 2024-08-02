@@ -202,6 +202,7 @@ ERROR: Encountered errors while bringing up the project.
 - **ElasticSearch**: http://localhost:9200/
 - **Log Stash**: http://localhost:9600/_node/stats
 - **Sonar Qube**: http://localhost:9000/ (admin/admin)
+- **Prometheus**: http://localhost:9090/
 
 ## 6. **Junit, Integration Test and Sonarqube CodeCoverage**
 
