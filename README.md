@@ -455,6 +455,10 @@ sonar-runner               /usr/local/bin/mvn-entrypo ...   Exit 0
 
 ### 7.1 **Kibana Dashboard**
 
+> [!IMPORTANT] 
+> Invoke the Conversion Service API at least three times using the following URL: `http://localhost:8080/romannumeral?query=20`. Afterward, check the Kibana dashboard to verify if any data is displayed.
+
+
 1. Login into Kibana http://localhost:5601/
 2. Navigate to this path: http://localhost:5601/app/management/kibana/indexPatterns
 3. Click on ***Create index pattern***
