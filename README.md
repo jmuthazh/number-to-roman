@@ -459,7 +459,7 @@ sonar-runner               /usr/local/bin/mvn-entrypo ...   Exit 0
 - This cleans up docker-compose containers and remove orphans
 
 ## 10. **Project Files Layout**
-```
+```shell
 number-to-roman
 ├── README.md
 ├── docker
@@ -470,7 +470,6 @@ number-to-roman
 │   │   └── elasticsearch.yml
 │   ├── filebeat
 │   │   ├── filebeat.yml
-│   │   ├── logs
 │   │   └── modules.d
 │   │       └── system.yml
 │   ├── grafana
@@ -497,9 +496,6 @@ number-to-roman
 │   │   └── prometheus.yml
 │   └── spring-boot
 │       └── Dockerfile
-├── logs
-│   ├── application.log
-│   └── application.log.2024-07-28.0.gz
 ├── maven-settings.xml
 ├── mvnw
 ├── mvnw.cmd
@@ -521,18 +517,17 @@ number-to-roman
 │   ├── grafana-sys-monitor.png
 │   ├── kibana.png
 │   ├── sonar-myaccount.jpeg
-│   ├── sonar-qube.jpeg
+│   ├── sonar-qube.png
+│   ├── sonar-token-gen.jpeg
 │   ├── swagger-index.png
 │   ├── swagger-query.png
 │   └── swagger-range.png
 ├── scripts
 │   ├── buildDeploy.sh
 │   ├── checkDockerStatus.sh
-│   ├── dockerRun.sh
-│   ├── getContainerLogs.sh
+│   ├── logs.sh
 │   ├── restartDocker.sh
-│   ├── shutDown.sh
-│   └── testRateLimiter.sh
+│   └── shutDown.sh
 ├── sonar-project.properties
 └── src
     ├── integration-test
@@ -560,6 +555,8 @@ number-to-roman
     │   │               │   ├── ErrorDetails.java
     │   │               │   ├── GlobalExceptionHandler.java
     │   │               │   └── InvalidInputException.java
+    │   │               ├── security
+    │   │               │   └── SecurityConfig.java
     │   │               ├── service
     │   │               │   ├── NumberToRomanService.java
     │   │               │   └── impl
@@ -579,15 +576,15 @@ number-to-roman
                         │   └── SwaggerConfigTest.java
                         ├── controller
                         │   └── NumberToRomanControllerTest.java
+                        ├── security
+                        │   └── SecurityConfigTest.java
                         ├── service
                         │   └── impl
                         │       └── NumberToRomanServiceImplTest.java
                         └── validation
                             └── InputValidationTest.java
 
-50 directories, 73 files
-
-
+50 directories, 72 files
 
 ```
 ## 11. **References**
