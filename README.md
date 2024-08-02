@@ -39,7 +39,7 @@ This Spring Boot Application architecture has monitoring, logging, and continuou
 CI/CD) using several tools.
 <br/>The main components include:
 
-* OpenTelemetry Collector: For collecting telemetry data.
+* OpenTelemetry Collector: Opensource Framework for observability and collecting metrics, unified observability framework
 * Prometheus: For metrics collection.
 * Grafana: For visualization.
 * Elasticsearch, Logstash, Kibana (ELK stack): For logging and searching.
@@ -58,12 +58,12 @@ CI/CD) using several tools.
 - **OpenTelemetry Collector**: Collects telemetry data from the application.
 - **Prometheus**: Collects and stores metrics.
 - **Grafana**: Visualizes metrics from Prometheus.
-- **Elasticsearch**: Stores logs processed by Logstash.
-- **Logstash**: Processes and sends logs to Elasticsearch.
+- **Elasticsearch**: Realt-time indexing, stores logs processed by Logstash.
+- **Logstash**: Data transformation, enrichment and send logs to Elasticsearch.
 - **Kibana**: Visualizes logs stored in Elasticsearch.
 - **Filebeat**: Ships logs to Logstash.
 - **SonarQube**: Analyzes code quality.
-- **PostgreSQL:** Database for SonarQube .
+- **PostgreSQL:** Database for SonarQube, helps admin SonarQube and Store User Data
 - **Spring Boot App:** The application being monitored and analyzed .
 - **Sonar Runner:** Runs SonarQube analysis on the codebase .
 
