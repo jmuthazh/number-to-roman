@@ -1,5 +1,7 @@
 package com.adobe.convertor.integration;
 
+import com.adobe.convertor.bean.ConversionResponse;
+import com.adobe.convertor.bean.ConversionResult;
 import com.adobe.convertor.exception.InvalidInputException;
 import com.adobe.convertor.service.NumberToRomanService;
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,7 +38,8 @@ class NumberToRomanIntegrationTest {
     void testConvertToRoman_SingleNumber() throws Exception {
         // Arrange
 
-
+        ConversionResult conversionResult = new ConversionResult("5", "V");
+        when(numberToRomanService.convertToRomanNumeral(5)).thenReturn(conversionResult);
         // Act & Assert
         mockMvc.perform(get("/romannumeral")
                         .param("query", "5")
@@ -48,6 +52,10 @@ class NumberToRomanIntegrationTest {
     @WithMockUser(username = "user")
     void testConvertToRoman_Range() throws Exception {
         // Arrange
+        ConversionResponse response = new ConversionResponse(
+                List.of(new ConversionResult("1", "I"), new ConversionResult("2", "II"))
+        );
+        when(numberToRomanService.convertRangeToRoman(1, 2)).thenReturn(response.getConversions());
 
 
         // Act & Assert
