@@ -140,7 +140,7 @@ sonarqube-db              docker-entrypoint.sh postgres    Up (healthy)     5432
 ```
 
 > [!IMPORTANT]
-> If you encounter issues with your container not starting or showing errors, make sure to run the `./builDeploy.sh`
+> If you encounter issues with your container not starting or showing errors like this shown below, make sure to run the `./builDeploy.sh`
 script from the `/scripts` folder repeatedly until the problem is resolved.
 ```shell
 ERROR: for app  Container "da423aaae8e0" is unhealthy.
