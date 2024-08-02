@@ -586,6 +586,7 @@ number-to-roman
 - [Roman Numerals](https://simple.wikipedia.org/wiki/Roman_numerals)
 - [Spring Boot Documentation](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
 - [Grafana Documentation](https://grafana.com/docs/)
+- [Grafana Setup Reference](https://keepgrowing.in/tools/grafana-provisioning-how-to-configure-data-sources-and-dashboards/)
 - [Prometheus Documentation](https://prometheus.io/docs/introduction/overview/)
 - [Filebeat Documentation](https://www.elastic.co/guide/en/beats/filebeat/current/index.html)
 - [Elasticsearch Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
