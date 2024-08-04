@@ -11,25 +11,31 @@ logging integrations using Grafana, Prometheus, and the ELK (Elasticsearch, Logs
 ## Table of Contents
 
 1. [Project Architecture](#1-project-architecture)
-    - 1.1 [Project overview](#11-project-overview)
+    - 1.1 [Project overview](#11-project-overview)    - 
     - 1.2 [Architecture Diagram](#12-architecture-diagram)
-2. [Pre-requisites](#2-pre-requisites)
-3. [Install & Setup](#3-install-steps-to-set-up-project)
-4. [Credentials](#4-credentials)
-5. [All Service Endpoint Details](#5-all-service-endpoint-details)
-6. [Junit, Integration Test and Sonarqube CodeCoverage](#6-junit-integration-test-and-sonarqube-codecoverage)
-    - 6.1 [Test Scenario's](#61-test-scenarios)
-    - 6.2 [Junit Testing](#62-junit-testing)
-    - 6.3 [Integration Test](#63-integration-test)
-    - 6.4 [Sonar Code Coverage](#64-sonar-code-coverage)
-      - 6.4.1 [ Follow the steps to run the Sonar Code Coverage](#641-follow-the-steps-to-run-the-sonar-code-coverage)
-7. [Logging & Monitoring - ELK Stack](#7--logging--monitoring---elk-stack)
-    - 7.1 [Kibana Dashboard](#71-kibana-dashboard)
-8. [Grafana, Prometheus Dashboard & Monitoring](#8--grafana-prometheus-dashboard--monitoring-metrics)
-    - 8.1 [Access Grafana](#81-access-grafana)
-9. [Shutdown Service & Clean Up](#9-shutdown-service--clean-up-docker)
-10. [Project File Layout](#10-project-files-layout)
-11. [References](#11-references)
+      - 1.2.1 [Kong API Gateway](#121-kong-api-gateway)
+      - 1.2.2 [Physical Architecture](#122-physical-architecture)
+3.[Pre-requisites](#3-pre-requisites)
+4.[Install & Setup](#4-install-steps-to-set-up-project)
+5.[Credentials](#5-credentials)
+6.[All Service Endpoint Details](#6-all-service-endpoint-details)
+7.[Junit, Integration Test and Sonarqube CodeCoverage](#7-junit-integration-test-and-sonarqube-codecoverage)
+    - 7.1 [Test Scenario's](#71-test-scenarios)
+    - 7.2 [Junit Testing](#72-junit-testing)
+    - 7.3 [Integration Test](#73-integration-test)
+    - 7.4 [Sonar Code Coverage](#74-sonar-code-coverage)
+      - 7.4.1 [ Follow the steps to run the Sonar Code Coverage](#741-follow-the-steps-to-run-the-sonar-code-coverage)
+      - 7.4.2 [ Alternative method to generate sonar token](#742-alternative-method-to-generate-the-token-in-sonarqube-ui-skip-this-if-the-token-has-already-been-generated)
+      - 7.4.3 [Run Sonar Analysis Report](#743-run-sonar-analysis-report)
+8.[Kong API & Features](#8-kong-api--features)
+      - 8.1[Test Kong API Gateway](#81-test-kong-api-gateway-with-springboot-app)
+9.[Logging & Monitoring - ELK Stack](#9-logging--monitoring---elk-stack)
+    - 9.1 [Kibana Dashboard](#91-kibana-dashboard)
+10.[Grafana, Prometheus Dashboard & Monitoring](#10-grafana-prometheus-dashboard--monitoring-metrics)
+    - 10.1 [Access Grafana](#101-access-grafana)
+11.[Shutdown Service & Clean Up](#11-shutdown-service--clean-up-docker)
+12.[Project File Layout](#12-project-files-layout)
+13.[References](#13-references)
 
 ## 1. **Project Architecture**
 
@@ -51,6 +57,31 @@ CI/CD) using several tools.
 
 ### 1.2 **Architecture Diagram**
 
+### 1.2.1 **Kong API Gateway**
+
+Kong API Gateway is an open-source tool designed to manage, secure, and monitor APIs and microservices. 
+![api-gateway.png](screenshots/api-gateway.png)
+
+### Key Features:
+
+1. **API Gateway**: Acts as a middleware between clients and backend services, handling requests, and responses. It can manage traffic, enforce policies, and perform various transformations.
+
+2. **Load Balancing**: Distributes incoming traffic across multiple backend services to ensure high availability and reliability.
+
+3. **Security**: Provides built-in security features like authentication, rate limiting, and IP whitelisting to protect your APIs from unauthorized access and abuse.
+
+4. **Monitoring & Logging**: Integrates with monitoring and logging tools to provide insights into API usage, performance, and errors. It supports logging via various outputs like stdout, files, or external systems.
+
+5. **Plugin Architecture**: Extensible with a rich ecosystem of plugins that add functionalities such as caching, transformations, and advanced security measures. You can also develop custom plugins.
+
+6. **Developer Portal**: Offers a user-friendly interface for developers to explore API documentation, test endpoints, and manage their API keys.
+
+7. **Scalability**: Designed to scale horizontally, making it suitable for handling high traffic and complex API environments.
+
+8. **Deployment Flexibility**: Can be deployed on-premises, in the cloud, or as a managed service (Kong Cloud).
+
+Kong helps organizations streamline their API management processes, improve security, and enhance the overall developer experience.
+#### 1.2.2 **Physical Architecture**
 ![architecture.png](screenshots/architecture.png)
 
 #### **Legends**
@@ -67,7 +98,26 @@ CI/CD) using several tools.
 - **Spring Boot App:** The application being monitored and analyzed .
 - **Sonar Runner:** Runs SonarQube analysis on the codebase .
 
-## 2. **Pre-requisites**
+## 2. **Tech Stack and Infrastructure utilized for this project**
+1. Spring Boot - 3.3.2
+2. Maven - 3.9.8
+3. OpenAPI - 2.3.0
+4. Kong - 2.8.5
+5. Prometheus - latest
+6. Open-Telemetry - latest
+7. Grafana - latest
+8. Kibana - 7.17.22
+9. Elasticsearch - 7.17.22
+10. Logstash - 7.17.22
+11. Filebeat - 7.17.22
+12. Sonarqube - latest
+13. Postgres (Sonarqube) - latest
+14. Docker Compose - 1.29.2
+15. Docker - 20.10.16
+
+
+
+## 3. **Pre-requisites**
 
 Before you begin, ensure you have met the following requirements:
 
@@ -94,7 +144,7 @@ mvn -v
 
 - Basic understanding of Spring Boot, Docker, and monitoring/logging tools
 
-## 3. **Install steps to set up Project**
+## 4. **Install steps to set up Project**
 > [!NOTE]
 > Before starting, please note that the installation process may take approximately 2 to 3 minutes to complete, specifically during `buildDeploy`.
 
@@ -125,20 +175,19 @@ After successful docker deployment, you should see the following containers runn
 ```
 
 ```sh
-         Name                        Command                   State                                        Ports                                 
---------------------------------------------------------------------------------------------------------------------------------------------------
-app                       java -javaagent:/usr/src/a ...   Up               0.0.0.0:8080->8080/tcp                                                
-docker_otel-collector_1   /otelcol --config /etc/ote ...   Up               0.0.0.0:4317->4317/tcp, 55678/tcp, 55679/tcp, 0.0.0.0:55681->55681/tcp
-elasticsearch             /bin/tini -- /usr/local/bi ...   Up (healthy)     0.0.0.0:9200->9200/tcp, 9300/tcp                                      
-filebeat                  /usr/bin/tini -- /usr/loca ...   Up (unhealthy)                                                                         
-grafana                   /run.sh                          Up (healthy)     0.0.0.0:3000->3000/tcp                                                
-kibana                    /bin/tini -- /usr/local/bi ...   Up (healthy)     0.0.0.0:5601->5601/tcp                                                
-logstash                  /usr/local/bin/docker-entr ...   Up (healthy)     0.0.0.0:5000->5000/tcp, 0.0.0.0:5044->5044/tcp, 9600/tcp              
-prometheus                /bin/prometheus --config.f ...   Up (healthy)     0.0.0.0:9090->9090/tcp                                                
-sonar-runner              /usr/local/bin/mvn-entrypo ...   Up                                                                                     
-sonarqube                 /opt/sonarqube/docker/entr ...   Up (healthy)     0.0.0.0:9000->9000/tcp                                                
-sonarqube-db              docker-entrypoint.sh postgres    Up (healthy)     5432/tcp                                                              
-                                         
+app              java -Djava.security.egd=f ...   Up               0.0.0.0:8080->8080/tcp                                                                            
+elasticsearch    /bin/tini -- /usr/local/bi ...   Up (healthy)     0.0.0.0:9200->9200/tcp, 9300/tcp                                                                  
+filebeat         /usr/bin/tini -- /usr/loca ...   Up (unhealthy)                                                                                                     
+grafana          /run.sh                          Up (healthy)     0.0.0.0:3000->3000/tcp                                                                            
+kibana           /bin/tini -- /usr/local/bi ...   Up (healthy)     0.0.0.0:5601->5601/tcp                                                                            
+kong             /docker-entrypoint.sh kong ...   Up (healthy)     0.0.0.0:8000->8000/tcp, 127.0.0.1:8001->8001/tcp, 0.0.0.0:8443->8443/tcp, 127.0.0.1:8444->8444/tcp
+logstash         /usr/local/bin/docker-entr ...   Up (healthy)     0.0.0.0:5000->5000/tcp, 0.0.0.0:5044->5044/tcp, 9600/tcp                                          
+otel-collector   /otelcol --config /etc/ote ...   Up (healthy)   0.0.0.0:13133->13133/tcp, 0.0.0.0:4317->4317/tcp, 55678/tcp, 55679/tcp, 0.0.0.0:55681->55681/tcp  
+prometheus       /bin/prometheus --config.f ...   Up (healthy)     0.0.0.0:9090->9090/tcp                                                                            
+sonar-runner     /usr/local/bin/mvn-entrypo ...   Exit 0                                                                                                             
+sonarqube        /opt/sonarqube/docker/entr ...   Up (healthy)     0.0.0.0:9000->9000/tcp                                                                            
+sonarqube-db     docker-entrypoint.sh postgres    Up (healthy)     5432/tcp                                                                                          
+
 ```
 
 > [!IMPORTANT]
@@ -149,13 +198,13 @@ ERROR: for app  Container "da423aaae8e0" is unhealthy.
 ERROR: Encountered errors while bringing up the project.
 
 ```
-## 4. **Credentials**
+## 5. **Credentials**
 
-1. **Conversion Service**: http://localhost:8080/romannumeral?query=400 (admin/SuperSecretPass123)
+1. **Conversion Service**: http://localhost:8000/romannumeral?query=400 (admin/SuperSecretPass123)
 2. **Grafana**: http://localhost:3000 (admin/admin)
 2. **Sonar Qube**: http://localhost:9000/ (admin/admin)
 
-## 5. **All Service Endpoint Details**
+## 6. **All Service Endpoint Details**
 
 - **Conversion Service Endpoint**
     - Credential to consume this service: `admin/SuperSecretPass123`
@@ -191,14 +240,18 @@ ERROR: Encountered errors while bringing up the project.
         ```
       ![swagger-range.png](screenshots/swagger-range.png)
 
-        - **Conversion Service API:**
-            - **API for Number:** http://localhost:8080/romannumeral?query=400
-            - **API for Range:** http://localhost:8080/romannumeral?min=5&max=100
+        - **Conversion Service API (Exposed via Kong Gateway):**
+            - **API for Number:** http://localhost:8000/romannumeral?query=400
+            - **API for Range:** http://localhost:8000/romannumeral?min=5&max=100
 
        [Note:] Number Range should be from min: >=1, max <= 3999)
     - **Spring Metrics**
         - Spring Actuator: http://localhost:8080/actuator
         - Prometheus: http://localhost:8080/actuator/prometheus
+- **Kong Admin API**:
+  - Services: http://localhost:8001/services
+  - Routes: http://localhost:8001/services/app/routes
+  - Rate Limit Plugin: http://localhost:8001/services/app/plugins
 - **Kibana**: http://localhost:5601/
 - **Grafana**: http://localhost:3000 (admin/admin)
 - **ElasticSearch**: http://localhost:9200/
@@ -206,9 +259,9 @@ ERROR: Encountered errors while bringing up the project.
 - **Sonar Qube**: http://localhost:9000/ (admin/admin)
 - **Prometheus**: http://localhost:9090/
 
-## 6. **Junit, Integration Test and Sonarqube CodeCoverage**
+## 7. **Junit, Integration Test and Sonarqube CodeCoverage**
 
-### 6.1 **Test Scenario's**
+### 7.1 **Test Scenario's**
 
 1. Positive Input:
 
@@ -335,7 +388,7 @@ ERROR: Encountered errors while bringing up the project.
   "details": "uri=/romannumeral"
 }
 ```
-### 6.2 **Junit Testing**
+### 7.2 **Junit Testing**
 
 * [NumberToRomanServiceImplTest.java](src/test/java/com/adobe/convertor/service/impl/NumberToRomanServiceImplTest.java) 
   - This test class verifies `NumberToRomanController` endpoints using `MockMvc`, including **valid** and **invalid** conversions, **error** **handling**, and **parameter checks**, ensuring the controller interacts correctly with NumberToRomanService.
@@ -362,14 +415,14 @@ ERROR: Encountered errors while bringing up the project.
     * **Protected Endpoint:** Confirms that the /romannumeral endpoint requires authentication.
     * **Authenticated Access:** Verifies that authenticated users can access the /romannumeral endpoint.
 
-### 6.3 **Integration Test**
+### 7.3 **Integration Test**
 
 - This test runs the end to end integration test and pass actual values to the service.
   -[NumberToRomanIntegrationTest.java](src/test/java/com/adobe/convertor/integration/NumberToRomanIntegrationTest.java)
 
-### 6.4 **Sonar Code Coverage**
+### 7.4 **Sonar Code Coverage**
 
-#### 6.4.1 **Follow the steps to run the Sonar Code Coverage**
+#### 7.4.1 **Follow the steps to run the Sonar Code Coverage**
 
 1. Login into **SonarQube**: http://localhost:9000/ (admin/admin)
 2. **Password Change:**
@@ -392,7 +445,7 @@ curl -u admin:Sonar@123 -X POST "http://localhost:9000/api/user_tokens/generate?
 
 
 > **Note:** if you have already generated the token, you can skip the following step.
-#### **Alternative Method to Generate the Token in SonarQube UI (Skip this if the token has already been generated)**
+####  7.4.2 **Alternative Method to Generate the Token in SonarQube UI (Skip this if the token has already been generated)**
  
 1. Login with same credential as above.  http://localhost:9000/ (admin/Sonar@123)
 5. Go to http://localhost:9000/account/security
@@ -410,7 +463,7 @@ curl -u admin:Sonar@123 -X POST "http://localhost:9000/api/user_tokens/generate?
    ![copy-token.jpeg](screenshots/copy-token.jpeg)
 
 
-### **Run Sonar Analysis Report**
+### 7.4.3 **Run Sonar Analysis Report**
 
 **Steps to Run the Script and Verify Docker Status**
 1. **Run the Initial Script:**
@@ -457,9 +510,72 @@ sonar-runner               /usr/local/bin/mvn-entrypo ...   Exit 0
 
 ![sonq-qube.png](screenshots/sonar-qube.png)
 
-## 7 . **Logging & Monitoring - ELK Stack**
+## 8. **Kong API & Features**
+Kong allows to configure the following features:
+* **Services and Routes**
+```mermaid
+<pre class="mermaid"> 
+flowchart LR
+  A(API client)
+  B("`Route 
+  (/mock)`")
+  C("`Service
+  (example_service)`")
+  D(Upstream 
+  application)
+  
+  A &lt;--requests
+  responses--&gt; B
+  subgraph id1 ["`
+  **KONG GATEWAY**`"]
+    B &lt;--requests
+    responses--&gt; C
+  end
+  C &lt;--requests
+  responses--&gt; D
 
-### 7.1 **Kibana Dashboard**
+  style id1 rx:10,ry:10
+  
+  </pre>
+```
+
+* **Rate Limiting** ( Global rate limit, Service level rate limit, Route level rate limit)
+* **Proxy caching** (Cache response based on config, Global, Entery-level proxy cache)
+* **Key Authentication** (Key Auth, Basic Auth, OAuth, LDAP, OpenID connect)
+* **Load Balancing**
+  ![loadbalance.png](screenshots/loadbalance.png)
+### 8.1 **Test Kong API Gateway with Springboot App**:
+- **Run** the below shell script it will test the rate limit of the spring boot app. It will hit the following endpoint for 110 times and 429 Status code will be return when it goes above 100 request per minute. 
+- Other configuration also include : 5 request per second and 1000 request per hour. When you hit more than 5 request per second, it will block the ip address and send **429** status.
+```shell
+./testRateLimiter.sh
+
+Output: Shows http status code ( Ran 110 times here)
+
+Sending request #1...
+Response status code: 200
+Sending request #2...
+Response status code: 200
+Sending request #3...
+Response status code: 200
+.
+.
+.
+.
+Sending request #108...
+Response status code: 429
+Sending request #109...
+Response status code: 429
+Sending request #110...
+Response status code: 429
+Test completed.
+jayakesavanmuthazhagan@Jayakesavans-MacBook-Pro-2 scripts % 
+
+```
+
+## 9. **Logging & Monitoring - ELK Stack**
+
+### 9.1 **Kibana Dashboard**
 
 > [!IMPORTANT] 
 > Invoke the Conversion Service API at least three times using the following URL: `http://localhost:8080/romannumeral?query=20`. Afterward, check the Kibana dashboard to verify if any data is displayed.
@@ -476,9 +592,9 @@ sonar-runner               /usr/local/bin/mvn-entrypo ...   Exit 0
 6. **Kibana Dashboard View**
    ![kibana.png](screenshots/kibana.png)
 
-## 8 . **Grafana, Prometheus Dashboard & Monitoring Metrics**
+## 10. **Grafana, Prometheus Dashboard & Monitoring Metrics**
 
-### 8.1 **Access Grafana**
+### 10.1 **Access Grafana**
 
 1. Login into http://localhost:3000
 2. UserId: admin , Password: admin
@@ -499,7 +615,7 @@ sonar-runner               /usr/local/bin/mvn-entrypo ...   Exit 0
 7. Open **Spring Boot Statistics & Endpoint Metrics** dashboard
    ![grafana-endpoint.png](screenshots/grafana-endpoint.png)
 
-## 9. **Shutdown Service & Clean up Docker**
+## 11. **Shutdown Service & Clean up Docker**
 
 ```bash
  ./shutDown.sh
@@ -507,7 +623,7 @@ sonar-runner               /usr/local/bin/mvn-entrypo ...   Exit 0
 
 - This cleans up docker-compose containers and remove orphans
 
-## 10. **Project Files Layout**
+## 12. **Project Files Layout**
 ```shell
 number-to-roman
 ├── README.md
@@ -534,6 +650,8 @@ number-to-roman
 │   ├── kibana
 │   │   └── config
 │   │       └── kibana.yml
+│   ├── kong
+│   │   └── kong.yml
 │   ├── logstash
 │   │   ├── pipeline
 │   │   │   └── logstash.conf
@@ -551,6 +669,7 @@ number-to-roman
 ├── pom.xml
 ├── run-sonar.sh
 ├── screenshots
+│   ├── api-gateway.png
 │   ├── architecture.png
 │   ├── copy-token.jpeg
 │   ├── create-index-logstash.jpeg
@@ -565,6 +684,7 @@ number-to-roman
 │   ├── grafana-otel.png
 │   ├── grafana-sys-monitor.png
 │   ├── kibana.png
+│   ├── loadbalance.png
 │   ├── sonar-myaccount.jpeg
 │   ├── sonar-qube.png
 │   ├── sonar-token-gen.jpeg
@@ -576,8 +696,9 @@ number-to-roman
 │   ├── checkDockerStatus.sh
 │   ├── logs.sh
 │   ├── restartDocker.sh
-│   └── shutDown.sh
-├── sonar.properties
+│   ├── shutDown.sh
+│   └── testRateLimiter.sh
+├── sonar-project.properties
 └── src
     ├── main
     │   ├── java
@@ -628,10 +749,10 @@ number-to-roman
                         └── validation
                             └── InputValidationTest.java
 
-45 directories, 72 files
+46 directories, 76 files
 
 ```
-## 11. **References**
+## 13. **References**
 
 - [Roman Numerals](https://simple.wikipedia.org/wiki/Roman_numerals)
 - [Spring Boot Documentation](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
@@ -645,4 +766,5 @@ number-to-roman
 - [OpenTelemetry Documentation](https://opentelemetry.io/docs/)
 - [Docker Compose Documentation](https://docs.docker.com/compose/)
 - [SonarQube Documentation](https://docs.sonarqube.org/)
+- [Kong Documentation](https://docs.konghq.com/gateway/latest/)
 

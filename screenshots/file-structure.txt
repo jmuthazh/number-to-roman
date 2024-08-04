@@ -23,6 +23,8 @@ number-to-roman
 │   ├── kibana
 │   │   └── config
 │   │       └── kibana.yml
+│   ├── kong
+│   │   └── kong.yml
 │   ├── logstash
 │   │   ├── pipeline
 │   │   │   └── logstash.conf
@@ -40,6 +42,7 @@ number-to-roman
 ├── pom.xml
 ├── run-sonar.sh
 ├── screenshots
+│   ├── api-gateway.png
 │   ├── architecture.png
 │   ├── copy-token.jpeg
 │   ├── create-index-logstash.jpeg
@@ -54,6 +57,7 @@ number-to-roman
 │   ├── grafana-otel.png
 │   ├── grafana-sys-monitor.png
 │   ├── kibana.png
+│   ├── loadbalance.png
 │   ├── sonar-myaccount.jpeg
 │   ├── sonar-qube.png
 │   ├── sonar-token-gen.jpeg
@@ -65,7 +69,8 @@ number-to-roman
 │   ├── checkDockerStatus.sh
 │   ├── logs.sh
 │   ├── restartDocker.sh
-│   └── shutDown.sh
+│   ├── shutDown.sh
+│   └── testRateLimiter.sh
 ├── sonar-project.properties
 └── src
     ├── main
@@ -117,4 +122,4 @@ number-to-roman
                         └── validation
                             └── InputValidationTest.java
 
-45 directories, 72 files
+46 directories, 76 files
