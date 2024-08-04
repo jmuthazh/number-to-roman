@@ -29,7 +29,7 @@ logging integrations using Grafana, Prometheus, and the ELK (Elasticsearch, Logs
       - 7.4.2 [ Alternative method to generate sonar token](#742-alternative-method-to-generate-the-token-in-sonarqube-ui-skip-this-if-the-token-has-already-been-generated)
       - 7.4.3 [Run Sonar Analysis Report](#743-run-sonar-analysis-report)
 8. [Kong API & Features](#8-kong-api--features)
-    - 8.1[Test Kong API Gateway](#81-test-kong-api-gateway-with-springboot-app)
+    - 8.1 [Test Kong API Gateway](#81-test-kong-api-gateway-with-springboot-app)
 9. [Logging & Monitoring - ELK Stack](#9-logging--monitoring---elk-stack)
     - 9.1 [Kibana Dashboard](#91-kibana-dashboard)
 10. [Grafana, Prometheus Dashboard & Monitoring](#10-grafana-prometheus-dashboard--monitoring-metrics)
