@@ -539,8 +539,8 @@ curl -i -X POST http://localhost:8001/plugins \
 * **Load Balancing**
   ![loadbalance.png](screenshots/loadbalance.png)
 ### 8.1 **Test Kong API Gateway with Springboot App**:
-- **Run** the below shell script it will test the rate limit of the spring boot app. It will hit the following endpoint for 110 times and 429 Status code will be return when it goes above 100 request per minute. 
-- Other configuration also include : 5 request per second and 1000 request per hour. When you hit more than 5 request per second, it will block the ip address and send **429** status.
+- **Run** the following shell script to test the rate limit of the Spring Boot app. It will make 110 requests to the specified endpoint. A **429** status code will be returned if the number of requests exceeds 100 per minute.
+- Additional configurations include: 5 requests per second and 1000 requests per hour. If more than 5 requests are made per second, the IP address will be blocked and a **429** status code will be sent.
 ```shell
 ./testRateLimiter.sh
 
