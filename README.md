@@ -1,7 +1,7 @@
 # Spring Boot - Number to Roman Conversion with Monitoring and Logging
 
 This project demonstrates a Spring Boot application that converts numbers to Roman numerals. It supports two API Query and Range API (1-3999). It includes API gateway, monitoring and
-logging integrations using Grafana, Prometheus, and the ELK (Elasticsearch, Logstash, Kibana) stack.
+logging integrations using Kong, Grafana, Prometheus, and the ELK (Elasticsearch, Logstash, Kibana) stack.
 
 ## **Developer**
 
@@ -212,7 +212,7 @@ ERROR: Encountered errors while bringing up the project.
     - Credential to consume this service: `admin/SuperSecretPass123`
     - **Swagger:** http://localhost:8080/swagger-ui/index.html
       ![swagger-index.png](screenshots/swagger-index.png)
-        1. Query API: http://localhost:8080/romannumeral?query=200
+        1. Query API: http://localhost:8000/romannumeral?query=200
         ```shell
         {
         "input": "200",
@@ -221,7 +221,7 @@ ERROR: Encountered errors while bringing up the project.
         ``` 
 
       ![swagger-query.png](screenshots/swagger-query.png)
-        2. Range API:  http://localhost:8080/romannumeral?min=1&max=3
+        2. Range API:  http://localhost:8000/romannumeral?min=1&max=3
         ```shell
         {
         "conversions": [
@@ -267,7 +267,7 @@ ERROR: Encountered errors while bringing up the project.
 
 1. Positive Input:
 
-- http://localhost:8080/romannumeral?query=20
+- http://localhost:8000/romannumeral?query=20
 ```json
 {
     "input": "20",
@@ -277,7 +277,7 @@ ERROR: Encountered errors while bringing up the project.
 
 2. Negative Input:
 
-- http://localhost:8080/romannumeral?query=-11
+- http://localhost:8000/romannumeral?query=-11
 
 ```json
 {
@@ -289,7 +289,7 @@ ERROR: Encountered errors while bringing up the project.
 
 3. Invalid Input:
 
-- http://localhost:8080/romannumeral?query=4000L
+- http://localhost:8000/romannumeral?query=4000L
 
 ```json
 {
@@ -301,7 +301,7 @@ ERROR: Encountered errors while bringing up the project.
 
 3. Positive Range:
 
-- http://localhost:8080/romannumeral?min=3995&max=3999
+- http://localhost:8000/romannumeral?min=3995&max=3999
 
 ```json
 {
@@ -332,7 +332,7 @@ ERROR: Encountered errors while bringing up the project.
 
 4. Out of Range:
 
-- http://localhost:8080/romannumeral?min=1&max=4000
+- http://localhost:8000/romannumeral?min=1&max=4000
 
 ```json
 {
@@ -344,7 +344,7 @@ ERROR: Encountered errors while bringing up the project.
 
 5. High min & Low Max Range:
 
-- http://localhost:8080/romannumeral?min=45&max=40
+- http://localhost:8000/romannumeral?min=45&max=40
 
 ```json
 {
@@ -355,7 +355,7 @@ ERROR: Encountered errors while bringing up the project.
 ```
 
 6. Text Input:
-- http://localhost:8080/romannumeral?min=1df&max=10
+- http://localhost:8000/romannumeral?min=1df&max=10
 ```json
 {
   "statusCode": 500,
@@ -364,7 +364,7 @@ ERROR: Encountered errors while bringing up the project.
 }
 ```
 7. Number as String:
-- http://localhost:8080/romannumeral?min="1"&max="10"
+- http://localhost:8000/romannumeral?min="1"&max="10"
 ```json
 {
   "statusCode": 500,
@@ -373,7 +373,7 @@ ERROR: Encountered errors while bringing up the project.
 }
 ```
 8. Number and String:
-- http://localhost:8080/romannumeral?min=1&max=string
+- http://localhost:8000/romannumeral?min=1&max=string
 ```json
 {
   "statusCode": 500,
@@ -382,7 +382,7 @@ ERROR: Encountered errors while bringing up the project.
 }
 ```
 9. Query Input as String:
-- http://localhost:8080/romannumeral?query="100"
+- http://localhost:8000/romannumeral?query="100"
 ```json
 {
   "statusCode": 400,
@@ -573,7 +573,7 @@ jayakesavanmuthazhagan@Jayakesavans-MacBook-Pro-2 scripts %
 ### 9.1 **Kibana Dashboard**
 
 > [!IMPORTANT] 
-> Invoke the Conversion Service API at least three times using the following URL: `http://localhost:8080/romannumeral?query=20`. Afterward, check the Kibana dashboard to verify if any data is displayed.
+> Invoke the Conversion Service API at least three times using the following URL: `http://localhost:8000/romannumeral?query=20`. Afterward, check the Kibana dashboard to verify if any data is displayed.
 
 
 1. Login into Kibana http://localhost:5601/
