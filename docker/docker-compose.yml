@@ -64,7 +64,7 @@ services:
       retries: 3
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.22
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.0
     container_name: elasticsearch
     networks:
       - monitoring
@@ -91,7 +91,7 @@ services:
       retries: 5
 
   filebeat:
-    image: docker.elastic.co/beats/filebeat:7.17.22
+    image: docker.elastic.co/beats/filebeat:8.14.0
     links:
       - logstash:logstash
     container_name: filebeat
@@ -114,7 +114,7 @@ services:
       retries: 3
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:7.17.22
+    image: docker.elastic.co/logstash/logstash:8.14.0
     container_name: logstash
     networks:
       - monitoring
@@ -145,7 +145,7 @@ services:
       retries: 5
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.17.22
+    image: docker.elastic.co/kibana/kibana:8.14.0
     container_name: kibana
     networks:
       - monitoring
@@ -203,7 +203,7 @@ services:
       - monitoring
 
   kong:
-    image: kong:2.8.5
+    image: kong:latest
     container_name: kong
     environment:
       KONG_ADMIN_ACCESS_LOG: /dev/stdout
@@ -271,6 +271,10 @@ services:
         condition: service_healthy
     networks:
       - monitoring
+    restart: on-failure
+    deploy:
+      restart_policy:
+        condition: on-failure
 volumes:
   grafana-storage:
   es_data:

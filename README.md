@@ -90,7 +90,7 @@ Kong helps organizations streamline their API management processes, improve secu
 - **OpenTelemetry Collector**: Collects telemetry data from the application.
 - **Prometheus**: Collects and stores metrics.
 - **Grafana**: Visualizes metrics from Prometheus.
-- **Elasticsearch**: Realt-time indexing, stores logs processed by Logstash.
+- **Elasticsearch**: Real-time indexing, stores logs processed by Logstash.
 - **Logstash**: Data transformation, enrichment and send logs to Elasticsearch.
 - **Kibana**: Visualizes logs stored in Elasticsearch.
 - **Filebeat**: Ships logs to Logstash.
@@ -103,14 +103,14 @@ Kong helps organizations streamline their API management processes, improve secu
 1. Spring Boot - 3.3.2
 2. Maven - 3.9.8
 3. OpenAPI - 2.3.0
-4. Kong - 2.8.5
+4. Kong - latest
 5. Prometheus - latest
 6. Open-Telemetry - latest
 7. Grafana - latest
-8. Kibana - 7.17.22
-9. Elasticsearch - 7.17.22
-10. Logstash - 7.17.22
-11. Filebeat - 7.17.22
+8. Kibana - 8.14.0
+9. Elasticsearch - 8.14.0
+10. Logstash - 8.14.0
+11. Filebeat - 8.14.0
 12. Sonarqube - latest
 13. Postgres (Sonarqube) - latest
 14. Docker Compose - 1.29.2
@@ -243,7 +243,7 @@ ERROR: Encountered errors while bringing up the project.
       ![swagger-range.png](screenshots/swagger-range.png)
 
         - **Conversion Service API (Exposed via Kong Gateway):**
-            - **API for Number:** http://localhost:8000/romannumeral?query=400
+            - **API for Number:** http://localhost:8000/romannumeral?query=400 `admin/SuperSecretPass123`
             - **API for Range:** http://localhost:8000/romannumeral?min=5&max=100
 
        [Note:] Number Range should be from min: >=1, max <= 3999)
