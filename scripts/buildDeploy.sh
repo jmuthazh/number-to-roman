@@ -8,6 +8,8 @@ set -x
 
 
 # Start Docker Compose services with build
+#docker-compose -f ../docker/docker-compose.yml build --no-cache
+#docker-compose -f ../docker/docker-compose.yml up -d
 docker-compose -f ../docker/docker-compose.yml up -d --build
 
 # List all Docker Compose services

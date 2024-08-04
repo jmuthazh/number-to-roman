@@ -577,7 +577,7 @@ number-to-roman
 │   ├── logs.sh
 │   ├── restartDocker.sh
 │   └── shutDown.sh
-├── sonar-project.properties
+├── sonar.properties
 └── src
     ├── main
     │   ├── java

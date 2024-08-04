@@ -11,7 +11,12 @@ exporters:
   prometheus:
     endpoint: "0.0.0.0:55681"
 
+extensions:
+  zpages:
+    endpoint: 0.0.0.0:13133
+
 service:
+  extensions: [zpages]
   pipelines:
     traces:
       receivers: [otlp]

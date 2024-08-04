@@ -1,0 +1,35 @@
+_format_version: "1.1"
+services:
+  - name: app
+    url: http://app:8080
+    plugins:
+      - name: rate-limiting
+        config:
+          # 5 requests per second
+          second: 5
+          # 100 per minute is allowed
+          minute: 100
+          # 1000 per hour is allowed
+          hour: 1000
+          policy: local
+    routes:
+      - tags:
+          - OAS3_import
+          - OAS3file_openapi.json
+        name: app-path-get
+        methods:
+          - GET
+        paths:
+          - /romannumeral
+        strip_path: false
+
+    tags:
+      - OAS3_import
+      - OAS3file_openapi.json
+upstreams:
+  - name: app
+    targets:
+      - target: app:8080
+    tags:
+      - OAS3_import
+      - OAS3file_openapi.json
