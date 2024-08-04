@@ -517,7 +517,7 @@ Kong allows to configure the following features:
 ```shell
 curl -X GET http://localhost:8001/services
 ```
-* ![kong-service.png](screenshots/kong-service.png)
+![kong-service.png](screenshots/kong-service.png)
 * **Rate Limiting** ( Global rate limit, Service level rate limit, Route level rate limit)
 ```shell
 curl -i -X POST http://localhost:8001/plugins \
