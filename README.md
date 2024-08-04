@@ -1,6 +1,6 @@
 # Spring Boot - Number to Roman Conversion with Monitoring and Logging
 
-This project demonstrates a Spring Boot application that converts numbers to Roman numerals. It supports Query and range API (1-3999). It includes monitoring and
+This project demonstrates a Spring Boot application that converts numbers to Roman numerals. It supports two API Query and Range API (1-3999). It includes API gateway, monitoring and
 logging integrations using Grafana, Prometheus, and the ELK (Elasticsearch, Logstash, Kibana) stack.
 
 ## **Developer**
@@ -42,10 +42,10 @@ logging integrations using Grafana, Prometheus, and the ELK (Elasticsearch, Logs
 
 ### 1.1 **Project overview:**
 
-This Spring Boot Application architecture has monitoring, logging, and continuous integration/continuous deployment (
-CI/CD) using several tools.
+This Spring Boot Application architecture has API gateway, monitoring, logging, and code Analyzer using several tools.
 <br/>The main components include:
 
+* Kong Gateway: Protect API endpoints with rate limiter.
 * OpenTelemetry Collector: Opensource Framework for observability and collecting metrics, unified observability framework
 * Prometheus: For metrics collection.
 * Grafana: For visualization.
@@ -201,9 +201,10 @@ ERROR: Encountered errors while bringing up the project.
 ```
 ## 5. **Credentials**
 
-1. **Conversion Service**: http://localhost:8000/romannumeral?query=400 (admin/SuperSecretPass123)
-2. **Grafana**: http://localhost:3000 (admin/admin)
-2. **Sonar Qube**: http://localhost:9000/ (admin/admin)
+1. **Conversion Service**: http://localhost:8080/romannumeral?query=400 (admin/SuperSecretPass123)
+2. **Kong API Gateway Endpoint**: http://localhost:8000/romannumeral?query=400 (admin/SuperSecretPass123)
+3. **Grafana**: http://localhost:3000 (admin/admin)
+4. **Sonar Qube**: http://localhost:9000/ (admin/admin)
 
 ## 6. **All Service Endpoint Details**
 
