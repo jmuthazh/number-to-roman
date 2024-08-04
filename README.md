@@ -513,35 +513,28 @@ sonar-runner               /usr/local/bin/mvn-entrypo ...   Exit 0
 
 ## 8. **Kong API & Features**
 Kong allows to configure the following features:
-* **Services and Routes**
-```mermaid
-<pre class="mermaid"> 
-flowchart LR
-  A(API client)
-  B("`Route 
-  (/mock)`")
-  C("`Service
-  (example_service)`")
-  D(Upstream 
-  application)
-  
-  A &lt;--requests
-  responses--&gt; B
-  subgraph id1 ["`
-  **KONG GATEWAY**`"]
-    B &lt;--requests
-    responses--&gt; C
-  end
-  C &lt;--requests
-  responses--&gt; D
-
-  style id1 rx:10,ry:10
-  
-  </pre>
+* **Services and Routes** (Create service, update service, list service)
+```shell
+curl -X GET http://localhost:8001/services
 ```
-
+* ![kong-service.png](screenshots/kong-service.png)
 * **Rate Limiting** ( Global rate limit, Service level rate limit, Route level rate limit)
+```shell
+curl -i -X POST http://localhost:8001/plugins \
+  --data name=rate-limiting \
+  --data config.minute=5 \
+  --data config.policy=local
+```
 * **Proxy caching** (Cache response based on config, Global, Entery-level proxy cache)
+```shell
+curl -i -X POST http://localhost:8001/plugins \
+  --data "name=proxy-cache" \
+  --data "config.request_method=GET" \
+  --data "config.response_code=200" \
+  --data "config.content_type=application/json" \
+  --data "config.cache_ttl=30" \
+  --data "config.strategy=memory"
+```
 * **Key Authentication** (Key Auth, Basic Auth, OAuth, LDAP, OpenID connect)
 * **Load Balancing**
   ![loadbalance.png](screenshots/loadbalance.png)
