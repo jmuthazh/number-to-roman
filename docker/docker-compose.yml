@@ -72,6 +72,8 @@ services:
       - bootstrap.memory_lock=true
       - node.name=elasticsearch
       - cluster.name=elk-cluster
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - xpack.security.enabled=false
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
@@ -125,6 +127,7 @@ services:
       - ELASTIC_PASSWORD=changeme
       - XPACK_MONITORING_ELASTICSEARCH_USERNAME=elastic
       - XPACK_MONITORING_ELASTICSEARCH_PASSWORD=changeme
+      - XPACK_MONITORING_COLLECTION_ENABLED=true
     ports:
       - "5044:5044"  # Beats
       - "5000:5000"  # Logstash TCP input
@@ -150,13 +153,18 @@ services:
     networks:
       - monitoring
     environment:
+      - SERVERNAME=kibana
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
       - XPACK_MONITORING_UI_CONTAINER_ELASTICSEARCH_ENABLED=true
       - XPACK_MONITORING_COLLECTION_ENABLED=true
     ports:
       - "5601:5601"
     volumes:
       - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
+      - ./kibana/logs:/usr/share/kibana/logs  # Map the logs directory to a writable location
+    command: [ "/bin/bash", "-c", "mkdir -p /usr/share/kibana/logs && chown -R kibana:kibana /usr/share/kibana/logs && /usr/local/bin/kibana-docker" ]
     depends_on:
       - elasticsearch
     restart: unless-stopped
@@ -244,8 +252,6 @@ services:
     restart: on-failure
     networks:
       - monitoring
-    volumes:
-      - sonar-data:/usr/src/app
     depends_on:
       elasticsearch:
         condition: service_healthy
@@ -261,7 +267,10 @@ services:
     image: maven:3.8.1-openjdk-17
     container_name: sonar-runner
     volumes:
-      - sonar-data:/usr/src/app # Mount the shared volume
+      - sonar-data:/usr/src/app
+      - ../src:/usr/src/app/src/
+      - ../pom.xml:/usr/src/app/pom.xml
+      - ./sonar/run-sonar.sh:/usr/src/app/run-sonar.sh
     working_dir: /usr/src/app
     environment:
       SONAR_TOKEN: ${SONAR_TOKEN}

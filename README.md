@@ -26,8 +26,7 @@ logging integrations using Kong, Grafana, Prometheus, and the ELK (Elasticsearch
     - 7.3 [Integration Test](#73-integration-test)
     - 7.4 [Sonar Code Coverage](#74-sonar-code-coverage)
       - 7.4.1 [ Follow the steps to run the Sonar Code Coverage](#741-follow-the-steps-to-run-the-sonar-code-coverage)
-      - 7.4.2 [ Alternative method to generate sonar token](#742-alternative-method-to-generate-the-token-in-sonarqube-ui-skip-this-if-the-token-has-already-been-generated)
-      - 7.4.3 [Run Sonar Analysis Report](#743-run-sonar-analysis-report)
+      - 7.4.2 [Run Sonar Analysis Report](#742-run-sonar-analysis-report)
 8. [Kong API & Features](#8-kong-api--features)
     - 8.1 [Test Kong API Gateway](#81-test-kong-api-gateway-with-springboot-app)
 9. [Logging & Monitoring - ELK Stack](#9-logging--monitoring---elk-stack)
@@ -426,51 +425,16 @@ ERROR: Encountered errors while bringing up the project.
 
 #### 7.4.1 **Follow the steps to run the Sonar Code Coverage**
 
-1. Login into **SonarQube**: http://localhost:9000/ (admin/admin)
-2. **Password Change:**
-   - If SonarQube prompts you to change your password, update it to `Sonare@123`. This password should match the one specified in the `docker/.env` file.
-   - If you choose a different password, be sure to update the `.env` file accordingly.
-
-3. **Generate** the **sonar token** after changing the password and update the values in `docker/.env` file
-```shell
-curl -u admin:Sonar@123 -X POST "http://localhost:9000/api/user_tokens/generate?name=test-token"
-```
-
-- After a successful execution of above CURL, you should see output similar to the following. Copy the token value and save it in the `docker/.env` file.
-```shell
-{"login":"admin","name":"test-token","token":"dfdfdsfs123456777777dfsfdfdfsdfsdffsdfsdf","createdAt":"2024-08-02T07:07:51+0000","type":"USER_TOKEN"}%
-```
-    
-
-![sonar-token-gen.jpeg](screenshots/sonar-token-gen.jpeg)
+1. Login into **SonarQube**: http://localhost:9000/ (admin/Sonar@123)
 
 
 
-> **Note:** if you have already generated the token, you can skip the following step.
-####  7.4.2 **Alternative Method to Generate the Token in SonarQube UI (Skip this if the token has already been generated)**
- 
-1. Login with same credential as above.  http://localhost:9000/ (admin/Sonar@123)
-5. Go to http://localhost:9000/account/security
-4. Generate Sonar Qube Token as follows: Enter ***Name, Type, Project, Expires***
-   ![gnerate-newtoken](screenshots/generate-newtoken.jpeg)
-5. Copy the generated token and save it in the [.env](docker/.env) file located at `docker/.env`. 
-
-    ```bash
-    SONAR_TOKEN=<token>
-    SONAR_USER=admin
-    SONAR_PASSWORD=Sonar@123
-    ```
-
-  
-   ![copy-token.jpeg](screenshots/copy-token.jpeg)
-
-
-### 7.4.3 **Run Sonar Analysis Report**
+#### 7.4.2 **Run Sonar Analysis Report**
 
 **Steps to Run the Script and Verify Docker Status**
 1. **Run the Initial Script:**
 
-   * Execute the script `./restartDocker.sh` once to pass the generated token and new password to SonarQube.
+   * Execute the script `./buildDeploy.sh` 
    * Wait for 1 to 3 minutes for the `sonar-runner` state to show `Exit 0`.
    ```shell
     sonar-runner               /usr/local/bin/mvn-entrypo ...   Exit 0

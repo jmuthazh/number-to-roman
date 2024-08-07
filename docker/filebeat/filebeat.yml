@@ -2,10 +2,10 @@
 
 # Configure the Filebeat inputs
 filebeat.inputs:
-  - type: log
-    enabled: true
+  - type: filestream
+    id: my-filestream-id
     paths:
-      - /usr/share/filebeat/logs/*.log
+      - /var/log/*.log
 
 
 output.logstash:

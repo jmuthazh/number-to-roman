@@ -2,7 +2,37 @@
 server.name: kibana
 server.host: "0.0.0.0"
 elasticsearch.hosts: ["http://elasticsearch:9200"]
-logging.verbose: true
-# Kibana index name
-kibana.index: ".kibana"
+## X-Pack security credentials
+#
+elasticsearch.username: elastic
+elasticsearch.password: 'changeme'
 
+# Logging configuration
+logging:
+  appenders:
+    rolling-file:
+      type: rolling-file
+      fileName: /usr/share/kibana/logs/kibana.log
+      strategy:
+        type: numeric
+        pattern: '-%i'
+        max: 5
+      layout:
+        type: pattern
+        highlight: true
+        pattern: "logstash-%{+YYYY.MM.dd}"
+
+
+  root:
+    appenders: [rolling-file]
+    level: info
+
+# Data and plugins directory
+path.data: /usr/share/kibana/data
+
+
+# Default application to load
+
+server.port: 5601
+xpack.monitoring.enabled: true
+server.ssl.enabled: false
