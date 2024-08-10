@@ -203,7 +203,7 @@ ERROR: Encountered errors while bringing up the project.
 1. **Conversion Service**: http://localhost:8080/romannumeral?query=400 (admin/SuperSecretPass123)
 2. **Kong API Gateway Endpoint**: http://localhost:8000/romannumeral?query=400 (admin/SuperSecretPass123)
 3. **Grafana**: http://localhost:3000 (admin/admin)
-4. **Sonar Qube**: http://localhost:9000/ (admin/admin)
+4. **Sonar Qube**: http://localhost:9000/ (admin/Sonar@123)
 
 ## 6. **All Service Endpoint Details**
 
